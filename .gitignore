@@ -1,0 +1,5 @@
+# кеш python
+pycache/
+*.pycache
+# настройки редактора автора
+.vscode/
