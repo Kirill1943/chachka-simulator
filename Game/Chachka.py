@@ -1,7 +1,8 @@
 
 
 class Chachka:
-    def __init__(self, age):
+    def __init__(self, age, x, z):
+        self.x, self.z = x, z
         self.age = age
         self.xp = 100
         self.eat = 100
