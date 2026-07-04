@@ -1,5 +1,7 @@
 from time import time, sleep
 import random
+import json
+import os
 
 def reanim(chachka):
     if chachka.__class__.__name__ != "Chachka":
@@ -47,7 +49,13 @@ def reanim(chachka):
     else:
         print("☁️ облачков чачке... ты хочешь ее вернуть?")
         if input().lower().strip() in ["да", "хочу"]:
-            print("я тебя услышал... сохранение настроек чачки")
-            # TODO: сделать сохранение настроек чачки
+            pth = os.path.abspath(os.path.join(os.path.abspath(__file__), "..", "Config", "Chachka.json"))
+            with open(pth, "r", encoding="utf-8") as file:
+                Settings = dict(json.load(file))
+            if Settings["Save_Chachka"]:
+                print("я тебя услышал... сохранение настроек чачки")
+                # TODO: реализовать сохранение настроек
+            else:
+                print('Я бы мог но ты не настроил конфиг на бессмертность чачки')
         else:
-            print("нет?.. поверь - ты мог, но ты не захотел")
+            print("нет?.. поверь - ты мог попробовать, но ты не захотел")

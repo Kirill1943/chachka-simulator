@@ -1,11 +1,15 @@
-import chachka_reanimation as reanim
+import os
+import sys
 
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+import Game.chachka_reanimation as reanim
 
 class Chachka:
     def __init__(self, age, x, z):
         self.x, self.z = x, z
         self.age = age
-        self.xp = 100
+        self.hp = 100
         self.stamina = 100
         self.eat = 100
         self.in_map = ...
@@ -42,9 +46,9 @@ class Chachka:
             if self.stamina - minus_stamina <= 0:
                 minus_stamina -= self.stamina
                 self.stamina = 0
-                self.xp -= minus_stamina / 100 * 150
-                if self.xp <= 0:
-                    self.stamina, self.xp = 0, 0
+                self.hp -= minus_stamina / 100 * 150
+                if self.hp <= 0:
+                    self.stamina, self.hp = 0, 0
                     self.alive = False
                     print("чачка умерла.. но ты подбежал к чачке, ШАНС ЕСТЬ!")
                     reanim.reanim(self)
