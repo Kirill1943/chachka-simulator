@@ -3,8 +3,8 @@ import os.path
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from Game.items import eat_items as eat
-from chachka import Chachka
+from Game.items import Eat_items as eat
+from Chachka import Chachka
 from Game.game import Game
 
 class Map:

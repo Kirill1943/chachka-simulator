@@ -14,6 +14,7 @@ class Chachka:
         self.eat = 100
         self.in_map = ...
         self.alive = True
+        self.inventory = []
         self.__size = [6, 6, 6]
 
     def Viy(self, scream: int = 2):

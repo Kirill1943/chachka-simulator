@@ -4,7 +4,7 @@ import random
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from Game.items import eat_items as eat
+from Game.items import Eat_items as eat
 from Game.Map import maps
 
 def basegen(Map):
