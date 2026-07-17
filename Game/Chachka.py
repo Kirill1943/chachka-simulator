@@ -53,3 +53,5 @@ class Chachka:
                     self.alive = False
                     print("чачка умерла.. но ты подбежал к чачке, ШАНС ЕСТЬ!")
                     reanim.reanim(self)
+    def set_size(self, size: list):
+        self.__size = size

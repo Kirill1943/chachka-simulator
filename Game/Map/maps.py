@@ -5,7 +5,6 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 
 from Game.items import Eat_items as eat
 from Chachka import Chachka
-from Game.game import Game
 
 class Map:
     def __init__(self, x1, x2, z1, z2):
@@ -14,7 +13,6 @@ class Map:
         self.objects = []
         self.eat = []
         self.chaks = []
-        Game.maps.append(self)
     def link_chack(self, chachka: Chachka):
         if isinstance(chachka, Chachka):
             chack_x = max(self.x1, min(chachka.x, self.x2))

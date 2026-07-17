@@ -1,5 +1,6 @@
 from Game import Chachka
 from Game.Map import maps, gen_map
+from Game.game import ClassGame
 
 def run():
     print('=== Chachka Simulator - симулятор чачки ===')
@@ -8,6 +9,8 @@ def run():
     map_game = maps.Map(x1=-5, x2=5, z1=-5, z2=5)
     map_game.link_chack(chachka=pet)
     gen_map.basegen(map_game)
+    Gameclass = ClassGame()
+    Gameclass.add_map(map_game)
     print('--- подготовка окончена ---')
     while True:
         print('введите действие (Exit - выход, Info - информация об чачке)')
@@ -21,9 +24,11 @@ def run():
             print(f"Голод: {pet.eat}")
             print(f"Жива: {"Да" if pet.alive else "Нет"}")
             print(f"Выносливость: {pet.stamina}")
+            print(f"прошло тиков времени: {Gameclass.ticks_passed}")
             print(f"=============================")
         else:
             print('такой команды нету')
+        Gameclass.tick()
 
 if __name__ == "__main__":
     run()

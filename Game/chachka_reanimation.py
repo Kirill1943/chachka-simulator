@@ -53,7 +53,7 @@ def reanim(chachka):
             with open(pth, "r", encoding="utf-8") as file:
                 Settings = dict(json.load(file))
             if Settings["Save_Chachka"]:
-                print("я тебя услышал... сохранение настроек чачки")
+                print("я тебя услышал... сохранение настроек")
                 # TODO: реализовать сохранение настроек
             else:
                 print('Я бы мог но ты не настроил конфиг на бессмертность чачки')

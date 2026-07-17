@@ -1,0 +1,10 @@
+{
+    "Hp": "Unknown",
+    "Stamina": "Unknown",
+    "Eat": "Unknown",
+    "Size": ["?", "?", "?"],
+    "Coords": {
+        "x": 0,
+        "z": 0
+    }
+}
