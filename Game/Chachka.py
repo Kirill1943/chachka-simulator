@@ -5,6 +5,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 
 import Game.chachka_reanimation as reanim
 
+
 class Chachka:
     def __init__(self, age, x, z):
         self.x, self.z = x, z
@@ -42,16 +43,20 @@ class Chachka:
             self.x = max(self.in_map.x1, min(self.x, self.in_map.x2))
             self.z = max(self.in_map.z1, min(self.z, self.in_map.z2))
 
-            minus_stamina = (x + z) / 100 * 40
+            minus_stamina = (abs(x) + abs(z)) / 100 * 40
 
             if self.stamina - minus_stamina <= 0:
-                minus_stamina -= self.stamina
+                overuse = minus_stamina - self.stamina
                 self.stamina = 0
-                self.hp -= minus_stamina / 100 * 150
+                self.hp -= overuse / 100 * 150
+                
                 if self.hp <= 0:
                     self.stamina, self.hp = 0, 0
                     self.alive = False
                     print("чачка умерла.. но ты подбежал к чачке, ШАНС ЕСТЬ!")
                     reanim.reanim(self)
+            else:
+                self.stamina -= minus_stamina
+
     def set_size(self, size: list):
         self.__size = size

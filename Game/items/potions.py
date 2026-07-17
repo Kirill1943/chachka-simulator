@@ -3,8 +3,9 @@ import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from effects import baffes
 from Chachka import Chachka
+from effects import baffes
+
 
 class instant_regenerate_potion:
     def __init__(self, effect_level):

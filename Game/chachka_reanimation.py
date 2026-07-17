@@ -1,7 +1,8 @@
-from time import time, sleep
-import random
 import json
 import os
+import secrets
+from time import sleep, time
+
 
 def reanim(chachka):
     if chachka.__class__.__name__ != "Chachka":
@@ -41,7 +42,7 @@ def reanim(chachka):
 
     chance_dead = max(2, min(chance_dead, 95))
     
-    roll = random.randint(1, 100)
+    roll = secrets.randbelow(100) + 1
     if roll > chance_dead:
         chachka.hp = 40
         chachka.stamina = 100
@@ -52,7 +53,7 @@ def reanim(chachka):
             pth = os.path.abspath(os.path.join(os.path.abspath(__file__), "..", "Config", "Chachka.json"))
             with open(pth, "r", encoding="utf-8") as file:
                 Settings = dict(json.load(file))
-            if Settings["Save_Chachka"]:
+            if Settings.get("Save_Chachka", False):
                 print("я тебя услышал... сохранение настроек")
                 # TODO: реализовать сохранение настроек
             else:

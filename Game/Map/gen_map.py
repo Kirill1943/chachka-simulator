@@ -1,11 +1,12 @@
 import os
+import secrets
 import sys
-import random
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 from Game.items import Eat_items as eat
 from Game.Map import maps
+
 
 def basegen(Map):
     """
@@ -17,7 +18,7 @@ def basegen(Map):
 
         for x in range(x1, x2 + 1):
             for z in range(z1, z2 + 1):
-                choice = random.randint(1, 100)
+                choice = secrets.randbelow(100) + 1
                 if 0 <= choice <= 7:
                     Map.link_eat(eat.Apple(x=x, z=z))
                 elif 8 <= choice <= 33:

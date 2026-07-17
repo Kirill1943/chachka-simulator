@@ -1,10 +1,10 @@
-import sys
 import os.path
+import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from Game.items import Eat_items as eat
-from Chachka import Chachka
+
 
 class Map:
     def __init__(self, x1, x2, z1, z2):
@@ -13,13 +13,17 @@ class Map:
         self.objects = []
         self.eat = []
         self.chaks = []
-    def link_chack(self, chachka: Chachka):
-        if isinstance(chachka, Chachka):
+
+    def link_chack(self, chachka):
+        if type(chachka).__name__ == "Chachka":
             chack_x = max(self.x1, min(chachka.x, self.x2))
             chack_z = max(self.z1, min(chachka.z, self.z2))
             chachka.x, chachka.z = chack_x, chack_z
             self.objects.append(chachka)
             self.chaks.append(chachka)
+        else:
+            print('[ERROR] попытка расположить НЕ чачку на карте')
+
     def link_eat(self, food: eat.Base_Eat):
         if isinstance(food, eat.Base_Eat):
             eat_x = max(self.x1, min(food.x, self.x2))

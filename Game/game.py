@@ -1,8 +1,9 @@
 from Map.maps import Map
 
+
 class ClassGame:
     def __init__(self, time: int = 1):
-        self.maps = []
+        self.maps: list[Map] = []
         self.time = time # как быстро будет течь время
         self.ticks_passed = time
     def tick(self):
