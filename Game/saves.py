@@ -26,6 +26,7 @@ def load(load_file=DEFAULT_SETTINGS_FILE, link_map=None):
                 if size_data == ["?", "?", "?"] or size_data not in allowed_sizes:
                     size_data = [30, 30, 30]
                 chachka_object.set_size(size_data)
+                chachka_object.in_map = link_map
                 
                 return chachka_object
     return None

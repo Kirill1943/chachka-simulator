@@ -1,11 +1,23 @@
+import os
+import sys
+
 from Game import Chachka
+from Game.Cheats import main_cheat as cheat
 from Game.game import ClassGame
 from Game.Map import gen_map, maps
 from Game.UI import drawing_map_GUI as draw_map
 
+Dir_File = os.path.dirname(os.path.abspath(__file__))
+Full_Cheats_Path = os.path.abspath(os.path.join(Dir_File, "Config", "Cheats.json"))
+
+if "--cheats" in sys.argv:
+    CHEATS = True
+else:
+    CHEATS = False
 
 def run():
     print('=== Chachka Simulator - симулятор чачки ===')
+    print('[WARNING] Читы включены')
     print('--- подготовка игры.... ---')
     pet = Chachka.Chachka(age=0.5, x=0, z=0)
     map_game = maps.Map(x1=-5, x2=5, z1=-5, z2=5)
@@ -16,7 +28,8 @@ def run():
     print('--- подготовка окончена ---')
     
     while True:
-        print('введите действие (Exit - выход, Info - информация об чачке)')
+        print('введите действие (Exit - выход, Info - информация об чачке, dwawmap: отрисовать карту)')
+        if CHEATS: print('(Читы активированы, Введите Cheat для открытия читов)')
         cmd = input().strip().lower()
         
         if cmd == "exit":
@@ -32,6 +45,10 @@ def run():
             print(f"=============================")
         elif cmd == "drawmap":
             draw_map.draw(map_game)
+        elif cmd == "cheat" and CHEATS:
+            print("===========================")
+            cheat.run()
+            print("===========================")
         else:
             print('такой команды нету')
             

@@ -1,4 +1,4 @@
-from Map.maps import Map
+from Game.Map.maps import Map
 
 
 class ClassGame:
