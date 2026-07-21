@@ -22,7 +22,7 @@ class Map:
             self.objects.append(chachka)
             self.chaks.append(chachka)
         else:
-            print('[ERROR] попытка расположить НЕ чачку на карте')
+            print('[#FF0000][ERROR][/] попытка расположить НЕ чачку на карте')
 
     def link_eat(self, food: eat.Base_Eat):
         if isinstance(food, eat.Base_Eat):

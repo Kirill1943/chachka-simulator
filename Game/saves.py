@@ -2,6 +2,7 @@ import json
 import os
 
 import Chachka
+import rich
 
 DEFAULT_SETTINGS_FILE = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "saves", "save_1.json"))
 
@@ -13,7 +14,7 @@ def load(load_file=DEFAULT_SETTINGS_FILE, link_map=None):
             try:
                 settings = dict(json.load(file))
             except json.JSONDecodeError as e:
-                print(f'[ERROR] ошибка декодирования сохранения: {e}')
+                rich.print(f'[#FF0000][ERROR][/] ошибка декодирования сохранения: {e}')
                 return None 
             else:
                 coords = settings.get("Coords", {})

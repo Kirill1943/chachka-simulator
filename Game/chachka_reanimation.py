@@ -1,6 +1,7 @@
 import json
 import os
 import secrets
+import sys
 from time import sleep, time
 
 
@@ -57,6 +58,7 @@ def reanim(chachka):
                 print("я тебя услышал... сохранение настроек")
                 # TODO: реализовать сохранение настроек
             else:
-                print('Я бы мог но ты не настроил конфиг на бессмертность чачки')
+                print('Я бы мог но ты не настроил конфиг на бессмертность чачки... [#FF0000]Game Over')
+                sys.exit()
         else:
             print("нет?.. поверь - ты мог попробовать, но ты не захотел")

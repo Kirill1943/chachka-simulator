@@ -19,9 +19,25 @@ def basegen(Map):
         for x in range(x1, x2 + 1):
             for z in range(z1, z2 + 1):
                 choice = secrets.randbelow(100) + 1
-                if 0 <= choice <= 7:
+                if 1 <= choice <= 7:
                     Map.link_eat(eat.Apple(x=x, z=z))
                 elif 8 <= choice <= 33:
                     Map.link_eat(eat.Apple_slice(x=x, z=z))
+                else:
+                    continue
+
+def eazygen(Map):
+    """
+    легкая генерация карты. почти невозможно умереть
+    """
+    if isinstance(Map, maps.Map):
+        x1, x2 = min(Map.x1, Map.x2), max(Map.x1, Map.x2)
+        z1, z2 = min(Map.z1, Map.z2), max(Map.z1, Map.z2)
+
+        for x in range(x1, x2 + 1):
+            for z in range(z1, z2 + 1):
+                choice = secrets.randbelow(100) + 1
+                if 1 <= choice <= 90:
+                    Map.link_eat(eat.Apple(x=x, z=z, eat=40))
                 else:
                     continue
