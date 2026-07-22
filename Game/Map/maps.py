@@ -1,7 +1,9 @@
-import os.path
+import os
 import sys
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+import rich
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 from Game.items import Eat_items as eat
 
@@ -19,6 +21,7 @@ class Map:
             chack_x = max(self.x1, min(chachka.x, self.x2))
             chack_z = max(self.z1, min(chachka.z, self.z2))
             chachka.x, chachka.z = chack_x, chack_z
+            chachka.in_map = self
             self.objects.append(chachka)
             self.chaks.append(chachka)
         else:
@@ -31,3 +34,14 @@ class Map:
             food.x, food.z = eat_x, eat_z
             self.objects.append(food)
             self.eat.append(food)
+    def get_object(self, x, z):
+        try:
+            x, z = int(x), int(z)
+        except (ValueError, TypeError):
+            rich.print('[#FFFF00][WARNING][/] Указаны неккоректные координаты для нахождения обьекта по координатам')
+            return
+        x = max(self.x1, min(x, self.x2))
+        z = max(self.z1, min(z, self.z2))
+        for i in self.objects:
+            if i.x == x and i.z == z:
+                return i

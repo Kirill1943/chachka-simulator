@@ -60,7 +60,7 @@ def run():
         elif cmd in ["cheat", "cheats"]:
             if CHEATS:
                 print("===========================")
-                cheat.run()
+                cheat.run(Chack=pet)
                 print("===========================")
             else:
                 rich.print('[#FF0000] ERROR: Доступ запрещен - читы не включены')

@@ -1,9 +1,13 @@
 import os
 import sys
 
+import rich
+
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import Game.chachka_reanimation as reanim
+from Game.Utils.ScanTools.scan import scan_map
+from Game.Utils.SortTools.sort_objects import remove_chaks, sort_eat
 
 
 class Chachka:
@@ -28,11 +32,19 @@ class Chachka:
             scream = min(15, max(8, scream))
             print(f"Чачка орет: В{'И' * scream}")
 
-    def eating(self):
+    def eating(self, radius=3):
         if self.alive:
-            print("Чачка ест")
-            self.eat += 3
-            self.eat = max(0, min(self.eat, 100))
+            try:
+                radius = max(1, min(abs(int(radius)), 3))
+            except (ValueError, TypeError):
+                radius = 3
+            if self.in_map == None:
+                rich.print('[#FFFF00][WARNING][/] чачка не привязана к карте')
+            else:
+                eat = sort_eat(remove_chaks(scan_map()))
+                for i in eat:
+                    self.eat += i.eat
+                    self.eat = max(0, min(eat, 100))
 
     def step(self, x, z):
         if self.alive:
@@ -57,6 +69,5 @@ class Chachka:
                     reanim.reanim(self)
             else:
                 self.stamina -= minus_stamina
-
     def set_size(self, size: list):
         self.__size = size
