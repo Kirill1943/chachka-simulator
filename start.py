@@ -1,17 +1,31 @@
+import datetime
+import json
 import os
 import sys
 
 import rich
 
+import Game.logging as GameLog
 from Game import Chachka
 from Game.Cheats import main_cheat as cheat
 from Game.game import ClassGame
 from Game.Map import gen_map, maps
 from Game.UI import drawing_map_GUI as draw_map
 
-Dir_File = os.path.dirname(os.path.abspath(__file__))
-Full_Cheats_Path = os.path.abspath(os.path.join(Dir_File, "Config", "Cheats.json"))
+CONFIG_PATH = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Config"))
 
+with open(os.path.join(CONFIG_PATH, "Game.json"), "r", encoding="utf-8") as file:
+    GAME_CONFIG = json.load(file)
+
+now = datetime.datetime.now()
+
+raw_log_path = os.path.join(*(GAME_CONFIG["Logging"]["LogPath"]))
+
+log_path = str(raw_log_path).format(Day=now.strftime("%d"), Month=now.strftime("%m"), Year=now.strftime("%Y"))
+
+os.makedirs(os.path.dirname(log_path), exist_ok=True)
+if not os.path.exists(log_path): open(log_path, "w", encoding="utf-8").close()
+else: open(log_path, "a", encoding="utf-8").write("-----\n")
 if len(sys.argv) > 1 and sys.argv[1] == "--cheats":
     CHEATS = True
 else:
@@ -21,26 +35,41 @@ def run():
     print('Выберите генерацию игры:')
     print('1. стандартная регенерация (по умолчанию)')
     print('2. легкая генерация')
-    generate_type = input()
+    
+    generate_type = input().strip()
     if generate_type not in ["1", "2"]:
-        generate_type = 1
+        generate_type = "1"
+    if generate_type == "1":
+        generate_type_txt = "стандарт"
+    elif generate_type == "2":
+        generate_type_txt = "легкий"
+    GameLog.info(f"Игра запущена, Выбран режим игры: {generate_type_txt}", log_path)
+    
+        
     print('=== Chachka Simulator - симулятор чачки ===')
-    if CHEATS: rich.print('[#FFBB00][WARNING][/] Читы включены')
+    if CHEATS: 
+        rich.print('[#FFBB00][WARNING][/] Читы включены')
+        GameLog.warning(f"Читы включены", log_path)
     print('--- подготовка игры    ---')
+    
     pet = Chachka.Chachka(age=0.5, x=0, z=0)
     map_game = maps.Map(x1=-5, x2=5, z1=-5, z2=5)
     map_game.link_chack(chachka=pet)
+    
     if generate_type == "1":
         gen_map.basegen(map_game)
     elif generate_type == "2":
         gen_map.eazygen(map_game)
+        
     Gameclass = ClassGame()
     Gameclass.add_map(map_game)
     print('--- подготовка окончена ---')
     
     while True:
-        print('введите действие (Exit - выход, Info - информация об чачке, dwawmap: отрисовать карту, Eat: есть все что вокруг)')
-        if CHEATS: rich.print('[#AAFF00](Читы активированы, Введите Cheat для открытия читов)')
+        print('введите действие (Exit - выход, Info - информация об чачке, drawmap: отрисовать карту, Eat: есть все что вокруг)')
+        if CHEATS: 
+            rich.print('[#AAFF00](Читы активированы, Введите Cheat для открытия читов)')
+        
         cmd = input().strip().lower()
         
         if cmd == "exit":
@@ -69,7 +98,7 @@ def run():
                 rich.print('[#FF0000] ERROR: Доступ запрещен - читы не включены')
         else:
             print('такой команды нету')
-            
+        GameLog.info(f"Пользователь Ввел команду: {cmd}", log_path)
         Gameclass.tick()
 
 

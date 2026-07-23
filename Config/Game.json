@@ -1,0 +1,6 @@
+{
+    "Logging": {
+        "Log": true,
+        "LogPath": ["Logs", "ChachkaSimulator_Log_{Day}_{Month}_{Year}.log"]
+    }
+}
