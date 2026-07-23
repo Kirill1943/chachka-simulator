@@ -5,6 +5,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..",
 
 from Game.items.Eat_items import Base_Eat
 
+
 def sort_eat(objects: list):
     eat = []
     for i in objects:

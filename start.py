@@ -39,7 +39,7 @@ def run():
     print('--- подготовка окончена ---')
     
     while True:
-        print('введите действие (Exit - выход, Info - информация об чачке, dwawmap: отрисовать карту)')
+        print('введите действие (Exit - выход, Info - информация об чачке, dwawmap: отрисовать карту, Eat: есть все что вокруг)')
         if CHEATS: rich.print('[#AAFF00](Читы активированы, Введите Cheat для открытия читов)')
         cmd = input().strip().lower()
         
@@ -55,6 +55,9 @@ def run():
             print(f"прошло тиков времени: {Gameclass.ticks_passed}")
             print(f"Координаты чачки: X: {pet.x}, Z: {pet.z}")
             print(f"=============================")
+        elif cmd == "eat":
+            print('чачка ест...')
+            pet.eating()
         elif cmd == "drawmap":
             draw_map.draw(map_game)
         elif cmd in ["cheat", "cheats"]:

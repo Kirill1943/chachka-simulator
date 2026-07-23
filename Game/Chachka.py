@@ -41,10 +41,10 @@ class Chachka:
             if self.in_map == None:
                 rich.print('[#FFFF00][WARNING][/] чачка не привязана к карте')
             else:
-                eat = sort_eat(remove_chaks(scan_map()))
+                eat = sort_eat(remove_chaks(scan_map(distance=radius, Map=self.in_map)))
                 for i in eat:
                     self.eat += i.eat
-                    self.eat = max(0, min(eat, 100))
+                    self.eat = max(0, min(self.eat, 100))
 
     def step(self, x, z):
         if self.alive:
