@@ -1,5 +1,6 @@
-from Game.Map.maps import Map
 from Game.chachka_reanimation import reanim
+from Game.Map.maps import Map
+
 
 class ClassGame:
     def __init__(self, time: int = 1):

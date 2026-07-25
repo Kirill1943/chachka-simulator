@@ -12,6 +12,7 @@ class Map:
     def __init__(self, x1, x2, z1, z2):
         self.x1, self.x2 = x1, x2
         self.z1, self.z2 = z1, z2
+        self.gen_type = None
         self.objects = []
         self.eat = []
         self.chaks = []
