@@ -2,6 +2,7 @@ import datetime
 import json
 import os
 import sys
+from typing import Any
 
 import rich
 
@@ -66,7 +67,8 @@ def run():
     print('--- подготовка окончена ---')
     
     while True:
-        print('введите действие (Exit - выход, Info - информация об чачке, drawmap: отрисовать карту, Eat: есть все что вокруг)')
+        print("---\nExit - выход,\nInfo - информация об чачке,\ndrawmap: отрисовать карту,\neat: есть все что вокруг\nStep - шаг\n---")
+        print('введите действие: ')
         if CHEATS: 
             rich.print('[#AAFF00](Читы активированы, Введите Cheat для открытия читов)')
         
@@ -87,6 +89,15 @@ def run():
         elif cmd == "eat":
             print('чачка ест...')
             pet.eating()
+        elif cmd == "step":
+            x: Any = input("введите насколько передвинуться чачке по X: ")
+            z: Any = input("введите насколько передвинуться чачке по Z: ")
+            try:
+                x, z = int(x), int(z)
+            except (ValueError, TypeError):
+                print('неккоректные координаты')
+                continue
+            pet.step(x, z)
         elif cmd == "drawmap":
             draw_map.draw(map_game)
         elif cmd in ["cheat", "cheats"]:
