@@ -3,7 +3,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from Game.Map.gen_map import hardgen, basegen, eazygen
+from Game.Map.gen_map import basegen, eazygen, hardgen
 from Game.Map.maps import Map
 
 
