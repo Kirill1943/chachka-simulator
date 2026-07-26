@@ -38,7 +38,7 @@ class Chachka:
                 radius = max(1, min(abs(int(radius)), 3))
             except (ValueError, TypeError):
                 radius = 3
-            if self.in_map == None:
+            if self.in_map is None:
                 rich.print('[#FFFF00][WARNING][/] чачка не привязана к карте')
             else:
                 eat = sort_eat(remove_chaks(scan_map(distance=radius, Map=self.in_map)))

@@ -6,8 +6,8 @@ from typing import Any
 
 import rich
 
-import Game.logging as GameLog
 from Game import Chachka
+from Game import logging as GameLog
 from Game.Cheats import main_cheat as cheat
 from Game.game import ClassGame
 from Game.Map import gen_map, maps
@@ -75,8 +75,10 @@ def run():
         cmd = input().strip().lower()
         
         if cmd == "exit":
+            GameLog.info(f"завершение сессии...", log_path)
             break
         elif cmd == "info":
+            GameLog.info(f"Пользователь Ввел команду информации об чачке (info)", log_path)
             print(f"==== ИНФОРМАЦИЯ ОБ ЧАЧКЕ ====")
             status = "здоровая" if pet.hp >= 80 else "несильно повреждена" if pet.hp >= 60 else "повреждена" if pet.hp >= 20 else "критически повреждена" if pet.hp >= 5 else "почти умерла"
             print(f"Хп: {pet.hp}, Статус: {status}")
@@ -87,9 +89,11 @@ def run():
             print(f"Координаты чачки: X: {pet.x}, Z: {pet.z}")
             print(f"=============================")
         elif cmd == "eat":
+            GameLog.info(f"Пользователь Ввел команду поедания (eat)", log_path)
             print('чачка ест...')
             pet.eating()
         elif cmd == "step":
+            GameLog.info(f"Пользователь Ввел команду передвижения (step)", log_path)
             x: Any = input("введите насколько передвинуться чачке по X: ")
             z: Any = input("введите насколько передвинуться чачке по Z: ")
             try:
@@ -99,17 +103,20 @@ def run():
                 continue
             pet.step(x, z)
         elif cmd == "drawmap":
+            GameLog.info(f"Пользователь Ввел команду отрисовки карты (drawmap)", log_path)
             draw_map.draw(map_game)
         elif cmd in ["cheat", "cheats"]:
+            GameLog.info(f"Пользователь открывает читы...", log_path)
             if CHEATS:
                 print("===========================")
-                cheat.run(Chack=pet, Map=map_game)
+                cheat.run(Chack=pet, Map=map_game, logging_file_path=log_path)
                 print("===========================")
             else:
                 rich.print('[#FF0000] ERROR: Доступ запрещен - читы не включены')
+                GameLog.access_denied('Пользователь попытался войти в вкладку читов но запустил игру без этой возможности', log_path)
         else:
             print('такой команды нету')
-        GameLog.info(f"Пользователь Ввел команду: {cmd}", log_path)
+            GameLog.info('Пользователь ввел неверную команду')
         Gameclass.tick()
 
 
