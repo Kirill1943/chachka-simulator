@@ -34,34 +34,39 @@ else:
 
 def run():
     print('Выберите генерацию игры:')
+    print("0. сложная генерация")
     print('1. стандартная регенерация (по умолчанию)')
     print('2. легкая генерация')
     
     generate_type = input().strip()
-    if generate_type not in ["1", "2"]:
-        generate_type = "1"
-    if generate_type == "1":
+    if generate_type not in ["-1", "0", "1"]:
+        generate_type = "0"
+
+    if generate_type == "-1":
+        generate_type_txt = "сложно"
+    elif generate_type == "0":
         generate_type_txt = "стандарт"
-    elif generate_type == "2":
+    elif generate_type == "1":
         generate_type_txt = "легкий"
     GameLog.info(f"Игра запущена, Выбран режим игры: {generate_type_txt}", log_path)
-    
-        
+
     print('=== Chachka Simulator - симулятор чачки ===')
     if CHEATS: 
         rich.print('[#FFBB00][WARNING][/] Читы включены')
         GameLog.warning(f"Читы включены", log_path)
     print('--- подготовка игры    ---')
-    
+
     pet = Chachka.Chachka(age=0.5, x=0, z=0)
     map_game = maps.Map(x1=-5, x2=5, z1=-5, z2=5)
     map_game.link_chack(chachka=pet)
-    
-    if generate_type == "1":
+
+    if generate_type == "-1":
+        gen_map.hardgen(map_game)
+    if generate_type == "0":
         gen_map.basegen(map_game)
-    elif generate_type == "2":
+    elif generate_type == "1":
         gen_map.eazygen(map_game)
-        
+
     Gameclass = ClassGame()
     Gameclass.add_map(map_game)
     print('--- подготовка окончена ---')

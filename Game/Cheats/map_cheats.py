@@ -3,7 +3,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from Game.Map.gen_map import basegen, eazygen
+from Game.Map.gen_map import hardgen, basegen, eazygen
 from Game.Map.maps import Map
 
 
@@ -21,9 +21,11 @@ def regeneration(Map: Map, mode: str = "1"):
         Map.eat = []
 
     # 3. Вызываем генераторы
-    if mode == "1":
+    if mode == "-1":
+        hardgen(Map)
+    elif mode == "0":
         basegen(Map)
-    elif mode == "2":
+    elif mode == "1":
         eazygen(Map)
     else:
         basegen(Map)
