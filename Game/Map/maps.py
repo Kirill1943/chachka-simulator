@@ -12,9 +12,11 @@ class Map:
     def __init__(self, x1, x2, z1, z2):
         self.x1, self.x2 = x1, x2
         self.z1, self.z2 = z1, z2
+        self.gen_type = None
         self.objects = []
         self.eat = []
         self.chaks = []
+        self.potions = []
 
     def link_chack(self, chachka):
         if type(chachka).__name__ == "Chachka":
@@ -26,6 +28,13 @@ class Map:
             self.chaks.append(chachka)
         else:
             print('[#FF0000][ERROR][/] попытка расположить НЕ чачку на карте')
+    def link_potion(self, potion):
+        if type(potion).__name__ == "potion":
+            potion_x = max(self.x1, min(potion.x, self.x2))
+            potion_z = max(self.z1, min(potion.z, self.z2))
+            potion.x, potion.z = potion_x, potion_z
+            self.objects.append(potion)
+            self.potions.append(potion)
 
     def link_eat(self, food: eat.Base_Eat):
         if isinstance(food, eat.Base_Eat):

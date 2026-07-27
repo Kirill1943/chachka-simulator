@@ -41,7 +41,7 @@ def draw(map_instance: Map):
                     outline="#A0A0A0"
                 )
 
-        for food in map_instance.eat:
+        for food in map_instance.objects:
             cell_x = food.x - map_instance.x1
             cell_z = food.z - map_instance.z1
             

@@ -18,7 +18,7 @@ def scan_map(Map: Map, distance: int):
     for x in range(Map.x1 - distance, Map.x2 + distance + 1):
         for z in range(Map.z1 - distance, Map.z2 + distance + 1):
             obj = Map.get_object(x, z)
-            if obj == None:
+            if obj is None:
                 pass
             else:
                 objects.append(obj)
