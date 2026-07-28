@@ -1,9 +1,12 @@
 import os
 import sys
+import typing
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from Chachka import Chachka
+if typing.TYPE_CHECKING:
+    from Chachka import Chachka
+
 from effects import baffes
 
 

@@ -31,7 +31,9 @@ class Chachka:
         if self.alive:
             scream = min(15, max(8, scream))
             print(f"Чачка орет: В{'И' * scream}")
-
+    def use_potions(self, radius=1):
+        if self.alive:
+            pass
     def eating(self, radius=3):
         if self.alive:
             try:
@@ -45,7 +47,6 @@ class Chachka:
                 for i in eat:
                     self.eat += i.eat
                     self.eat = max(0, min(self.eat, 100))
-
     def step(self, x, z):
         if self.alive:
             x, z = max(-3, min(x, 3)), max(-3, min(z, 3))

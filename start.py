@@ -32,11 +32,63 @@ if len(sys.argv) > 1 and sys.argv[1] == "--cheats":
 else:
     CHEATS = False
 
+
+def command_info(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
+    GameLog.info(f"Пользователь Ввел команду информации об чачке (info)", log_path)
+    print(f"==== ИНФОРМАЦИЯ ОБ ЧАЧКЕ ====")
+    status = "здоровая" if pet.hp >= 80 else "несильно повреждена" if pet.hp >= 60 else "повреждена" if pet.hp >= 20 else "критически повреждена" if pet.hp >= 5 else "почти умерла"
+    print(f"Хп: {pet.hp}, Статус: {status}")
+    print(f"Голод: {pet.eat}")
+    print(f"Жива: {'Да' if pet.alive else 'Нет'}")
+    print(f"Выносливость: {pet.stamina}")
+    print(f"прошло тиков времени: {Gameclass.ticks_passed}")
+    print(f"Координаты чачки: X: {pet.x}, Z: {pet.z}")
+    print(f"=============================")
+
+def command_eat(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
+    GameLog.info(f"Пользователь Ввел команду поедания (eat)", log_path)
+    print('чачка ест...')
+    pet.eating()
+
+def command_step(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
+    GameLog.info(f"Пользователь Ввел команду передвижения (step)", log_path)
+    x: Any = input("введите насколько передвинуться чачке по X: ")
+    z: Any = input("введите насколько передвинуться чачке по Z: ")
+    try:
+        x, z = int(x), int(z)
+    except (ValueError, TypeError):
+        print('некоректные координаты')
+        return
+    pet.step(x, z)
+
+def command_cheat(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
+    GameLog.info(f"Пользователь открывает читы...", log_path)
+    if CHEATS:
+        print("===========================")
+        cheat.run(Chack=pet, Map=map, logging_file_path=log_path)
+        print("===========================")
+    else:
+        rich.print('[#FF0000] ERROR: Доступ запрещен - читы не включены')
+        GameLog.access_denied('Пользователь попытался войти в вкладку читов но запустил игру без этой возможности', log_path)
+
+def command_drawmap(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
+    GameLog.info(f"Пользователь Ввел команду отрисовки карты (drawmap)", log_path)
+    draw_map.draw(map)
+
+COMMANDS = {
+    "info": command_info,
+    "eat": command_eat,
+    "step": command_step,
+    "cheat": command_cheat,
+    "cheats": command_cheat,
+    "drawmap": command_drawmap
+}
+
 def run():
     print('Выберите генерацию игры:')
-    print("0. сложная генерация")
-    print('1. стандартная регенерация (по умолчанию)')
-    print('2. легкая генерация')
+    print("-1. сложная генерация")
+    print('0. стандартная регенерация (по умолчанию)')
+    print('1. легкая генерация')
     
     generate_type = input().strip()
     if generate_type not in ["-1", "0", "1"]:
@@ -48,6 +100,7 @@ def run():
         generate_type_txt = "стандарт"
     elif generate_type == "1":
         generate_type_txt = "легкий"
+
     GameLog.info(f"Игра запущена, Выбран режим игры: {generate_type_txt}", log_path)
 
     print('=== Chachka Simulator - симулятор чачки ===')
@@ -62,7 +115,7 @@ def run():
 
     if generate_type == "-1":
         gen_map.hardgen(map_game)
-    if generate_type == "0":
+    elif generate_type == "0":
         gen_map.basegen(map_game)
     elif generate_type == "1":
         gen_map.eazygen(map_game)
@@ -79,49 +132,13 @@ def run():
         
         cmd = input().strip().lower()
         
-        if cmd == "exit":
-            GameLog.info(f"завершение сессии...", log_path)
+        if cmd in COMMANDS:
+            COMMANDS[cmd](pet, Gameclass, map_game)
+        elif cmd == "exit":
             break
-        elif cmd == "info":
-            GameLog.info(f"Пользователь Ввел команду информации об чачке (info)", log_path)
-            print(f"==== ИНФОРМАЦИЯ ОБ ЧАЧКЕ ====")
-            status = "здоровая" if pet.hp >= 80 else "несильно повреждена" if pet.hp >= 60 else "повреждена" if pet.hp >= 20 else "критически повреждена" if pet.hp >= 5 else "почти умерла"
-            print(f"Хп: {pet.hp}, Статус: {status}")
-            print(f"Голод: {pet.eat}")
-            print(f"Жива: {'Да' if pet.alive else 'Нет'}")
-            print(f"Выносливость: {pet.stamina}")
-            print(f"прошло тиков времени: {Gameclass.ticks_passed}")
-            print(f"Координаты чачки: X: {pet.x}, Z: {pet.z}")
-            print(f"=============================")
-        elif cmd == "eat":
-            GameLog.info(f"Пользователь Ввел команду поедания (eat)", log_path)
-            print('чачка ест...')
-            pet.eating()
-        elif cmd == "step":
-            GameLog.info(f"Пользователь Ввел команду передвижения (step)", log_path)
-            x: Any = input("введите насколько передвинуться чачке по X: ")
-            z: Any = input("введите насколько передвинуться чачке по Z: ")
-            try:
-                x, z = int(x), int(z)
-            except (ValueError, TypeError):
-                print('неккоректные координаты')
-                continue
-            pet.step(x, z)
-        elif cmd == "drawmap":
-            GameLog.info(f"Пользователь Ввел команду отрисовки карты (drawmap)", log_path)
-            draw_map.draw(map_game)
-        elif cmd in ["cheat", "cheats"]:
-            GameLog.info(f"Пользователь открывает читы...", log_path)
-            if CHEATS:
-                print("===========================")
-                cheat.run(Chack=pet, Map=map_game, logging_file_path=log_path)
-                print("===========================")
-            else:
-                rich.print('[#FF0000] ERROR: Доступ запрещен - читы не включены')
-                GameLog.access_denied('Пользователь попытался войти в вкладку читов но запустил игру без этой возможности', log_path)
         else:
             print('такой команды нету')
-            GameLog.info('Пользователь ввел неверную команду')
+            GameLog.info('Пользователь ввел неверную команду', log_path)
         Gameclass.tick()
 
 

@@ -41,9 +41,9 @@ def draw(map_instance: Map):
                     outline="#A0A0A0"
                 )
 
-        for food in map_instance.objects:
-            cell_x = food.x - map_instance.x1
-            cell_z = food.z - map_instance.z1
+        for item in map_instance.objects:
+            cell_x = item.x - map_instance.x1
+            cell_z = item.z - map_instance.z1
             
             if 0 <= cell_x < width and 0 <= cell_z < height:
                 x1 = cell_x * cell_width
@@ -51,7 +51,7 @@ def draw(map_instance: Map):
                 x2 = x1 + cell_width
                 y2 = y1 + cell_height
                 
-                class_name = type(food).__name__
+                class_name = type(item).__name__
                 
                 if class_name == "Apple":
                     canvas.create_rectangle(
@@ -68,7 +68,20 @@ def draw(map_instance: Map):
                         fill="#88FF00", 
                         outline="#A0A0A0"
                     )
-                    
+                elif class_name == "instant_regenerate_potion":
+                    offset_x = cell_width // 4
+                    offset_y = cell_height // 4
+                    color: str
+                    if 1 <= item.effect.level <= 3:
+                        color = "#9B0000"
+                    elif 4 <= item.effect.level <= 5:
+                        color = "#FF0000"
+                    canvas.create_rectangle(
+                        x1 + offset_x, y1 + offset_y, 
+                        x2 - offset_x, y2 - offset_y,
+                        fill=color, 
+                        outline="#A0A0A0"
+                    )
         for chack in map_instance.chaks:
             cell_x = chack.x - map_instance.x1
             cell_z = chack.z - map_instance.z1
@@ -94,6 +107,12 @@ def draw(map_instance: Map):
 
         lbl_slice = tk.Label(root, text="■ Салатовый — Кусочек яблока (частично)", fg="#88FF00", font=("Arial", 10, "bold"))
         lbl_slice.pack(anchor="w", padx=15)
+
+        lbl_regeneration_potion_levels13 = tk.Label(root, text="■ темно-красный - зелье регенерации 1-3 уровня (на всю клетку)", fg="#9B0000", font=("Arial", 10, "bold"))
+        lbl_regeneration_potion_levels13.pack(anchor="w", padx=15)
+
+        lbl_regeneration_potion_levels45 = tk.Label(root, text="■ темно-красный - зелье регенерации 4-5 уровня (на всю клетку)", fg="#FF0000", font=("Arial", 10, "bold"))
+        lbl_regeneration_potion_levels45.pack(anchor="w", padx=15)
 
         btn_close = tk.Button(root, text="Вернуться в игру", command=root.destroy)
         btn_close.pack(pady=10)
