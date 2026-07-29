@@ -76,6 +76,7 @@ def command_drawmap(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
     draw_map.draw(map)
 
 def command_use_potions(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
+    GameLog.info(f"Пользователь Ввел команду поглощения зелей (use_potion / s)", log_path)
     pet.use_potions()
 
 COMMANDS = {
@@ -137,7 +138,7 @@ Info - информация об чачке,
 drawmap - отрисовать карту,
 eat - есть все что вокруг,
 Step - шаг,
-use_potion / use_potions - выпить зелья вокруг в радиусе 1 клетки
+use_potion / use_potions - выпить зелья вокруг в радиусе 1 клетки [НЕ РАБОТАЕТ]
 ---""")
         print("введите действие: ")
         if CHEATS: 

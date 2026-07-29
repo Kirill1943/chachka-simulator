@@ -4,11 +4,10 @@ import typing
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-if typing.TYPE_CHECKING:
-    from Chachka import Chachka
-
 from effects import baffes
 
+if typing.TYPE_CHECKING:
+    from Chachka import Chachka
 
 class potion:
     def __init__(self, effect_level, x, z):
@@ -23,9 +22,6 @@ class instant_regenerate_potion(potion):
         super().__init__(max(1, min(effect_level, 5)), z, x)
         self.effect = baffes.InstantRegeneration(self.level)
     def use(self, chachka_object: Chachka):
-        if isinstance(chachka_object, Chachka):
-            hp = chachka_object.hp
-            hp += self.effect.hp_regenerate
-            chachka_object.hp = max(0, min(hp, 100))
-        else:
-            pass
+        hp = chachka_object.hp
+        hp += self.effect.hp_regenerate
+        chachka_object.hp = max(0, min(hp, 100))

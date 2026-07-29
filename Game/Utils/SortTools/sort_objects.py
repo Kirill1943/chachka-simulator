@@ -5,10 +5,7 @@ import typing
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 from Game.items.Eat_items import Base_Eat
-from Game.Chachka import Chachka
 
-if typing.TYPE_CHECKING:
-    from Game.items.Potion_items import potion
 
 def sort_eat(objects: list):
     eat = []
@@ -18,6 +15,7 @@ def sort_eat(objects: list):
     return eat
 
 def sort_potions(objects: list):
+    from Game.items.Potion_items import potion
     potion_ = []
     for i in objects:
         if isinstance(i, potion):
@@ -26,7 +24,7 @@ def sort_potions(objects: list):
 
 def remove_chaks(objects: list):
     result = objects.copy()
-    for i in objects:
-        if isinstance(i, Chachka):
+    for i in result:
+        if i.__class__.__name__ == "Chachka":
             result.remove(i)
     return result
