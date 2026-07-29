@@ -75,13 +75,18 @@ def command_drawmap(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
     GameLog.info(f"Пользователь Ввел команду отрисовки карты (drawmap)", log_path)
     draw_map.draw(map)
 
+def command_use_potions(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
+    pet.use_potions()
+
 COMMANDS = {
     "info": command_info,
     "eat": command_eat,
     "step": command_step,
     "cheat": command_cheat,
     "cheats": command_cheat,
-    "drawmap": command_drawmap
+    "drawmap": command_drawmap,
+    "use_potion": command_use_potions,
+    "use_potions": command_use_potions
 }
 
 def run():
@@ -125,8 +130,16 @@ def run():
     print('--- подготовка окончена ---')
     
     while True:
-        print("---\nExit - выход,\nInfo - информация об чачке,\ndrawmap: отрисовать карту,\neat: есть все что вокруг\nStep - шаг\n---")
-        print('введите действие: ')
+        print("""
+---
+Exit - выход,
+Info - информация об чачке,
+drawmap - отрисовать карту,
+eat - есть все что вокруг,
+Step - шаг,
+use_potion / use_potions - выпить зелья вокруг в радиусе 1 клетки
+---""")
+        print("введите действие: ")
         if CHEATS: 
             rich.print('[#AAFF00](Читы активированы, Введите Cheat для открытия читов)')
         
