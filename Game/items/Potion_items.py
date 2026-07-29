@@ -11,15 +11,16 @@ from effects import baffes
 
 
 class potion:
-    def __init__(self, effect_level):
+    def __init__(self, effect_level, x, z):
         self.level = effect_level
         self.effect = ""
+        self.x, self.z = x, z
     def use(self, chachka_object: Chachka):
         pass
 
 class instant_regenerate_potion(potion):
-    def __init__(self, effect_level):
-        super().__init__(effect_level=max(1, min(effect_level, 5)))
+    def __init__(self, effect_level, x, z):
+        super().__init__(max(1, min(effect_level, 5)), z, x)
         self.effect = baffes.InstantRegeneration(self.level)
     def use(self, chachka_object: Chachka):
         if isinstance(chachka_object, Chachka):

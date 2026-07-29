@@ -78,15 +78,15 @@ def eazygen(Map: maps.Map):
                 if 1 <= choice <= 70:
                     Map.link_eat(eat.Apple(x=x, z=z, eat=40))
                 elif 71 <= choice <= 72:
-                    Map.link_potion(potions.instant_regenerate_potion(effect_level=1))
+                    Map.link_potion(potions.instant_regenerate_potion(effect_level=1, x=x, z=z))
                 elif 73 <= choice <= 75:
-                    Map.link_potion(potions.instant_regenerate_potion(effect_level=2))
+                    Map.link_potion(potions.instant_regenerate_potion(effect_level=2, x=x, z=z))
                 elif 76 <= choice <= 80:
-                    Map.link_potion(potions.instant_regenerate_potion(effect_level=3))
+                    Map.link_potion(potions.instant_regenerate_potion(effect_level=3, x=x, z=z))
                 elif 81 <= choice <= 88:
-                    Map.link_potion(potions.instant_regenerate_potion(effect_level=4))
+                    Map.link_potion(potions.instant_regenerate_potion(effect_level=4, x=x, z=z))
                 elif 89 <= choice <= 92:
-                    Map.link_potion(potions.instant_regenerate_potion(effect_level=5))
+                    Map.link_potion(potions.instant_regenerate_potion(effect_level=5, x=x, z=z))
                 else:
                     continue
         Map.gen_type = 1
