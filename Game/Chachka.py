@@ -7,8 +7,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 
 import Game.chachka_reanimation as reanim
 from Game.Utils.ScanTools.scan import scan_map
-from Game.Utils.SortTools.sort_objects import (remove_chaks, sort_eat,
-                                               sort_potions)
+from Game.Utils.SortTools.sort_objects import sort_eat, sort_potions
 
 
 class Chachka:
