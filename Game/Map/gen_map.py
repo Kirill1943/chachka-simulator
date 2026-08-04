@@ -50,7 +50,7 @@ def basegen(Map: maps.Map):
                     continue
                 choice = secrets.randbelow(100) + 1
                 if 1 <= choice <= 2:
-                    Map.link_potion(potions.instant_regenerate_potion(effect_level=2))
+                    Map.link_potion(potions.instant_regenerate_potion(effect_level=2, x=x, z=z))
                 elif 3 <= choice <= 10:
                     Map.link_eat(eat.Apple(x=x, z=z))
                 elif 11 <= choice <= 36:

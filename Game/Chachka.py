@@ -36,17 +36,16 @@ class Chachka:
             try:
                 radius = max(1, min(abs(int(radius)), 3))
             except (ValueError, TypeError):
-                radius = 3
+                radius = 1
             if self.in_map is None:
                 rich.print('[#FFFF00][WARNING][/] чачка не привязана к карте')
             else:
                 potions = sort_potions(scan_map(distance=radius, Map=self.in_map))
                 for i in potions:
                     i.use(self)
-                    if i in self.in_map.potions:
-                        self.in_map.potions.remove(i)
-                    if i in self.in_map.objects:
-                        self.in_map.objects.remove(i)
+
+                self.in_map.potions = [p for p in self.in_map.potions if p not in potions]
+                self.in_map.objects = [o for o in self.in_map.objects if o not in potions]
     def eating(self, radius=3):
         if self.alive:
             try:
@@ -60,6 +59,8 @@ class Chachka:
                 for i in eat:
                     self.eat += i.eat
                     self.eat = max(0, min(self.eat, 100))
+                    if i in self.in_map.objects:
+                        self.in_map.objects.remove(i)
     def step(self, x, z):
         if self.alive:
             x, z = max(-3, min(x, 3)), max(-3, min(z, 3))
