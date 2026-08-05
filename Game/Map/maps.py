@@ -1,12 +1,16 @@
 import os
 import sys
+import typing
 
 import rich
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 from Game.items import Eat_items as eat
+from Game.items import Potion_items as potions
 
+if typing.TYPE_CHECKING:
+    from Game import Chachka
 
 class Map:
     def __init__(self, x1, x2, z1, z2):
@@ -18,7 +22,7 @@ class Map:
         self.chaks = []
         self.potions = []
 
-    def link_chack(self, chachka):
+    def link_chack(self, chachka: Chachka.Chachka):
         if type(chachka).__name__ == "Chachka":
             chack_x = max(self.x1, min(chachka.x, self.x2))
             chack_z = max(self.z1, min(chachka.z, self.z2))
@@ -29,7 +33,7 @@ class Map:
         else:
             print('[#FF0000][ERROR][/] попытка расположить НЕ чачку на карте')
     def link_potion(self, potion):
-        if type(potion).__name__ == "potion":
+        if isinstance(potion, potions.potion):
             potion_x = max(self.x1, min(potion.x, self.x2))
             potion_z = max(self.z1, min(potion.z, self.z2))
             potion.x, potion.z = potion_x, potion_z

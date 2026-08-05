@@ -7,7 +7,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 
 import Game.chachka_reanimation as reanim
 from Game.Utils.ScanTools.scan import scan_map
-from Game.Utils.SortTools.sort_objects import remove_chaks, sort_eat
+from Game.Utils.SortTools.sort_objects import sort_eat, sort_potions
 
 
 class Chachka:
@@ -31,7 +31,21 @@ class Chachka:
         if self.alive:
             scream = min(15, max(8, scream))
             print(f"Чачка орет: В{'И' * scream}")
+    def use_potions(self, radius=1):
+        if self.alive:
+            try:
+                radius = max(1, min(abs(int(radius)), 3))
+            except (ValueError, TypeError):
+                radius = 1
+            if self.in_map is None:
+                rich.print('[#FFFF00][WARNING][/] чачка не привязана к карте')
+            else:
+                potions = sort_potions(scan_map(distance=radius, Map=self.in_map, chachka_x=self.x, chachka_z=self.z))
+                for i in potions:
+                    i.use(self)
 
+                self.in_map.potions = [p for p in self.in_map.potions if p not in potions]
+                self.in_map.objects = [o for o in self.in_map.objects if o not in potions]
     def eating(self, radius=3):
         if self.alive:
             try:
@@ -41,11 +55,12 @@ class Chachka:
             if self.in_map is None:
                 rich.print('[#FFFF00][WARNING][/] чачка не привязана к карте')
             else:
-                eat = sort_eat(remove_chaks(scan_map(distance=radius, Map=self.in_map)))
+                eat = sort_eat(scan_map(distance=radius, Map=self.in_map, chachka_x=self.x, chachka_z=self.z))
                 for i in eat:
                     self.eat += i.eat
                     self.eat = max(0, min(self.eat, 100))
-
+                    if i in self.in_map.objects:
+                        self.in_map.objects.remove(i)
     def step(self, x, z):
         if self.alive:
             x, z = max(-3, min(x, 3)), max(-3, min(z, 3))

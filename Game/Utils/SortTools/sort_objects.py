@@ -4,6 +4,7 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 from Game.items.Eat_items import Base_Eat
+from Game.items.Potion_items import potion
 
 
 def sort_eat(objects: list):
@@ -13,10 +14,16 @@ def sort_eat(objects: list):
             eat.append(i)
     return eat
 
-def remove_chaks(objects: list):
-    from Game.Chachka import Chachka
-    result = objects.copy()
+def sort_potions(objects: list):
+    potion_ = []
     for i in objects:
-        if isinstance(i, Chachka):
+        if isinstance(i, potion):
+            potion_.append(i)
+    return potion_
+
+def remove_chaks(objects: list):
+    result = objects.copy()
+    for i in result:
+        if i.__class__.__name__ == "Chachka":
             result.remove(i)
     return result
