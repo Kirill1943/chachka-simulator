@@ -40,7 +40,7 @@ class Chachka:
             if self.in_map is None:
                 rich.print('[#FFFF00][WARNING][/] чачка не привязана к карте')
             else:
-                potions = sort_potions(scan_map(distance=radius, Map=self.in_map))
+                potions = sort_potions(scan_map(distance=radius, Map=self.in_map, chachka_x=self.x, chachka_z=self.z))
                 for i in potions:
                     i.use(self)
 
@@ -55,7 +55,7 @@ class Chachka:
             if self.in_map is None:
                 rich.print('[#FFFF00][WARNING][/] чачка не привязана к карте')
             else:
-                eat = sort_eat(scan_map(distance=radius, Map=self.in_map))
+                eat = sort_eat(scan_map(distance=radius, Map=self.in_map, chachka_x=self.x, chachka_z=self.z))
                 for i in eat:
                     self.eat += i.eat
                     self.eat = max(0, min(self.eat, 100))
