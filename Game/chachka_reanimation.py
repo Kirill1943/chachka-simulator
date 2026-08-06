@@ -1,7 +1,6 @@
 import json
 import os
 import secrets
-import subprocess
 import sys
 from time import sleep, time
 
