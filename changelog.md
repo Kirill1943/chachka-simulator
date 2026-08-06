@@ -18,6 +18,10 @@
 
 * **gitignore:** переписан .gitignore
 
+### actions
+
+* **Github actions:** переписан .github/actions/tests.yml с заменой flake8 и isort на ruff
+
 ## исправлено
 
 * исправлена ошибка FileNotFoundError при вызове cls / clear через subprocess с флагом shell=False (замена на print("\033[H\033[J", end=""))
