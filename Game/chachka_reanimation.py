@@ -70,7 +70,7 @@ def reanim(chachka):
         chachka.eat = 40
         chachka.stamina = 100
         chachka.alive = True
-        subprocess.run(['cls'] if os.name == 'nt' else ['clear'], shell=False)
+        print("\033[H\033[J", end="")
         rich.print(f"🎉 [bold #00FF00]ВЫЖИЛА![/] (Кубик: {roll} при шансе смерти {round(chance_dead, 1)}%)")
         input("\nНажмите Enter, чтобы продолжить игру...")
     else:
