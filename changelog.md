@@ -20,7 +20,7 @@
 
 ### actions
 
-* **Github actions:** переписан .github/actions/tests.yml с заменой flake8 и isort на ruff
+* **Github actions:** переписан .github/workflows/tests.yml с заменой flake8 и isort на ruff
 
 ## исправлено
 

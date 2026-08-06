@@ -152,7 +152,7 @@ def run():
             'Отрисовать карту (drawmap)',
             'Есть все что вокруг (eat)',
             'Сделать шаг (step)',
-            'Выпить зелья в радиусе 1 клетки (Use_potion / Use_potions'
+            'Выпить зелья в радиусе 1 клетки (Use_potion / Use_potions)'
         ]
         
         cmd_keys = ['', 'info', 'drawmap', 'eat', 'step', 'use_potions']
