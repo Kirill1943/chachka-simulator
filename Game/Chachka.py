@@ -8,7 +8,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 import Game.chachka_reanimation as reanim
 from Game.Utils.ScanTools.scan import scan_map
 from Game.Utils.SortTools.sort_objects import sort_eat, sort_potions
-
+from Game.Utils.cpp_math import chachka_math
 
 class Chachka:
     def __init__(self, age, x, z):
@@ -70,7 +70,7 @@ class Chachka:
             self.x = max(self.in_map.x1, min(self.x, self.in_map.x2))
             self.z = max(self.in_map.z1, min(self.z, self.in_map.z2))
 
-            minus_stamina = (abs(x) + abs(z)) / 100 * 40
+            minus_stamina = chachka_math.calculate_stamina(x, z)
 
             if self.stamina - minus_stamina <= 0:
                 overuse = minus_stamina - self.stamina

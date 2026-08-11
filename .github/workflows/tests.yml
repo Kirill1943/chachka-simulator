@@ -6,7 +6,7 @@ on:
     branches: ["main", "development"]
 
 jobs:
-  lint-and-test:
+  py_lint-and-test:
     runs-on: ubuntu-latest
 
     steps:

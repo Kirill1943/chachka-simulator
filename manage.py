@@ -48,6 +48,7 @@ def main():
             with open(requirements, "w", encoding="utf-8"):
                 pass
         subprocess.run([sys.executable, "-m", "pip", "install", "-r", requirements])
+        subprocess.run([sys.executable, "setup.py", "build_ext", "--inplace"])
 
     elif command == "clean":
         sub_command = sys.argv[2] if len(sys.argv) > 2 else "all"
