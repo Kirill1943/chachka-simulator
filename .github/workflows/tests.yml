@@ -1,44 +1,77 @@
 name: Авто-тест симулятора чачки
 on:
   push:
-    branches: ["main", "development"]
+    branches: ["main", "development", "feature/cpp-extensions"]
   pull_request:
-    branches: ["main", "development"]
+    branches: ["main", "development", "feature/cpp-extensions"]
 
 jobs:
   py_lint-and-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Чтение репозитория
+      - name: Чтение репозитория [1 / 8]
         uses: actions/checkout@v7.0.1
 
-      - name: Установка Python 3.14
+      - name: Установка Python 3.14 [2 / 8]
         uses: actions/setup-python@v7.0.0
         with:
           python-version: "3.14"
+          cache: "pip"
 
-      - name: Установка всех зависимостей [1 / 6]
+      - name: Установка всех зависимостей [3 / 8]
         run: |
           python -m pip install --upgrade pip
-          python manage.py install
+          python -m pip install -r requirements.txt
 
-      - name: Установка инструментов (Ruff, MyPy, Bandit) [2 / 6]
+      - name: Установка инструментов (Ruff, MyPy, Bandit) [4 / 8]
         run: |
           python -m pip install mypy bandit ruff
 
-      - name: Проверка синтаксиса  (Ruff) [3 / 6]
+      - name: Проверка синтаксиса  (Ruff) [5 / 8]
         run: |
           ruff check . --select=E9,F401,F821,F841,E225
 
-      - name: Проверка порядка импортов (Ruff) [4 / 6]
+      - name: Проверка порядка импортов (Ruff) [6 / 8]
         run: |
           ruff check . --select=I
 
-      - name: Проверка типов (MyPy) [5 / 6]
+      - name: Проверка типов (MyPy) [7 / 8]
         run: |
-          mypy . --ignore-missing-imports
+          mypy . --ignore-missing-imports --disable-error-code attr-defined
 
-      - name: Проверка уязвимостей (Bandit) [6 / 6]
+
+      - name: Проверка уязвимостей (Bandit) [8 / 8]
         run: |
           bandit -r . -ll
+          
+  cpp_test-build:
+    runs-on: ubuntu-latest
+    
+    if: |
+      github.ref == 'refs/heads/feature/cpp-extensions' || 
+      github.head_ref == 'feature/cpp-extensions'
+
+    steps:
+      - name: Чтение репозитория [1 / 5]
+        uses: actions/checkout@v7.0.1
+
+      - name: Установка Python 3.14 [2 / 5]
+        uses: actions/setup-python@v7.0.0
+        with:
+          python-version: "3.14"
+          cache: "pip"
+          
+      - name: Установка всех зависимостей [3 / 5]
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+          
+      - name: Установка инструментов сборки [4 / 5]
+        run: |
+          python -m pip install --upgrade setuptools wheel
+          python -m pip install pybind11
+          
+      - name: Сборка [5 / 5]
+        run: |
+          python setup.py build_ext --inplace

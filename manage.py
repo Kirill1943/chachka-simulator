@@ -1,3 +1,4 @@
+import glob
 import os
 import shutil
 import subprocess
@@ -28,6 +29,19 @@ def clean_pycache(path="."):
                 os.remove(file_path)
                 print(f"Удален файл: {file_path}")
 
+def clean_build(path="."):
+    for root, dirs, files in os.walk(path):
+        if "build" in dirs:
+            build_dir = os.path.join(root, "build")
+            shutil.rmtree(build_dir)
+            print(f"удалена папка build: {build_dir}")
+    search_pattern = os.path.join(path, "*.egg-info") 
+    
+    for egg in glob.glob(search_pattern):
+        egg_path = os.path.abspath(egg)
+        shutil.rmtree(egg_path)
+        print(f"удалена папка egg-info: {egg_path}")
+
 
 def main():
     if len(sys.argv) < 2:
@@ -49,6 +63,7 @@ def main():
                 pass
         subprocess.run([sys.executable, "-m", "pip", "install", "-r", requirements])
         subprocess.run([sys.executable, "setup.py", "build_ext", "--inplace"])
+        clean_build()
 
     elif command == "clean":
         sub_command = sys.argv[2] if len(sys.argv) > 2 else "all"
@@ -56,13 +71,17 @@ def main():
         if sub_command == "all":
             clean_log()
             clean_pycache()
+            clean_build()
         elif sub_command in ["pycache", "cache"]:
             clean_pycache()
         elif sub_command in ["logs", "log"]:
             clean_log()
+        elif sub_command in ["builded", "build"]:
+            clean_build()
         else:
             print(
                 "Чтобы удалить кеш введите: python manage.py clean cache\n"
+                "Чтобы удалить папку сборки build введите: python manage.py clean build\n"
                 "Чтобы удалить логи: python manage.py clean log\n"
                 "Чтобы удалить все сразу: python manage.py clean"
             )

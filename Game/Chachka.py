@@ -6,9 +6,10 @@ import rich
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import Game.chachka_reanimation as reanim
+from Game.Utils.cpp_math import chachka_math
 from Game.Utils.ScanTools.scan import scan_map
 from Game.Utils.SortTools.sort_objects import sort_eat, sort_potions
-from Game.Utils.cpp_math import chachka_math
+
 
 class Chachka:
     def __init__(self, age, x, z):
