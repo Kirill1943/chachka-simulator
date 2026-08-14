@@ -7,6 +7,8 @@ from time import sleep, time
 import rich
 from pick import pick
 
+from Game.Utils.cpp_utils.clamp import clamp_int as clamp
+
 
 def reanim(chachka):
     if chachka.__class__.__name__ != "Chachka":
@@ -39,11 +41,11 @@ def reanim(chachka):
         
         if error <= 0.3:
             chance_dead -= 15
-            line = f"Такт {i}: Отличный ритм! ({res} сек). Шанс смерти снижен до {max(0, chance_dead)}%"
+            line = f"Такт {i}: Отличный ритм! ({res} сек). Шанс смерти снижен до {clamp(2, chance_dead, 95)}%"
             rich.print(f"[#00FF00]{line}[/]")
         else:
             chance_dead += 5
-            line = f"Такт {i}: Ритм сбит... ({res} сек). Шанс смерти вырос до {min(100, chance_dead)}%"
+            line = f"Такт {i}: Ритм сбит... ({res} сек). Шанс смерти вырос до {clamp(2, chance_dead, 95)}%"
             rich.print(f"[#FF5555]{line}[/]")
             
         history_text += line + "\n"
@@ -61,7 +63,7 @@ def reanim(chachka):
     rich.print("[#00FF00]Считаем шансы...[/]")
     sleep(2)
 
-    chance_dead = max(2, min(chance_dead, 95))
+    chance_dead = clamp(2, chance_dead, 95)
     roll = secrets.randbelow(100) + 1
     
     if roll > chance_dead:

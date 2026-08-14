@@ -7,6 +7,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 
 import Game.chachka_reanimation as reanim
 from Game.Utils.cpp_math import chachka_math
+from Game.Utils.cpp_utils.clamp import clamp_int as clamp
 from Game.Utils.ScanTools.scan import scan_map
 from Game.Utils.SortTools.sort_objects import sort_eat, sort_potions
 
@@ -25,17 +26,17 @@ class Chachka:
 
     def Viy(self, scream: int = 2):
         if self.alive:
-            scream = min(5, max(1, scream))
+            scream = clamp(1, scream, 5)
             print(f"Чачка викает: В{'И' * scream}")
 
     def Scream(self, scream: int = 10):
         if self.alive:
-            scream = min(15, max(8, scream))
+            scream = clamp(8, scream, 15)
             print(f"Чачка орет: В{'И' * scream}")
     def use_potions(self, radius=1):
         if self.alive:
             try:
-                radius = max(1, min(abs(int(radius)), 3))
+                radius = clamp(1, abs(int(radius)), 3)
             except (ValueError, TypeError):
                 radius = 1
             if self.in_map is None:
@@ -50,7 +51,7 @@ class Chachka:
     def eating(self, radius=3):
         if self.alive:
             try:
-                radius = max(1, min(abs(int(radius)), 3))
+                radius = clamp(1, abs(int(radius)), 3)
             except (ValueError, TypeError):
                 radius = 3
             if self.in_map is None:
@@ -59,17 +60,18 @@ class Chachka:
                 eat = sort_eat(scan_map(distance=radius, Map=self.in_map, chachka_x=self.x, chachka_z=self.z))
                 for i in eat:
                     self.eat += i.eat
-                    self.eat = max(0, min(self.eat, 100))
+                    self.eat = clamp(0, self.eat, 100)
                     if i in self.in_map.objects:
                         self.in_map.objects.remove(i)
     def step(self, x, z):
         if self.alive:
-            x, z = max(-3, min(x, 3)), max(-3, min(z, 3))
+            x = clamp(-3, x, 3)
+            z = clamp(-3, z, 3)
             self.x += x
             self.z += z
 
-            self.x = max(self.in_map.x1, min(self.x, self.in_map.x2))
-            self.z = max(self.in_map.z1, min(self.z, self.in_map.z2))
+            self.x = clamp(self.in_map.x1, self.x, self.in_map.x2)
+            self.z = clamp(self.in_map.x1, self.x, self.in_map.x2)
 
             minus_stamina = chachka_math.calculate_stamina(x, z)
 

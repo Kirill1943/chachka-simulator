@@ -1,5 +1,6 @@
 from Game.chachka_reanimation import reanim
 from Game.Map.maps import Map
+from Game.Utils.cpp_utils.clamp import clamp_double as clamp
 
 
 class ClassGame:
@@ -28,8 +29,8 @@ class ClassGame:
         """
         функция нужна для исправления значений переменных заданной чачки
         """
-        chack.hp = max(0, min(chack.hp, 100))
-        chack.eat = max(0, min(chack.eat, 100))
-        chack.stamina = max(0, min(chack.stamina, 100))
+        chack.hp = clamp(0, chack.hp, 100)
+        chack.eat = clamp(0, chack.eat, 100)
+        chack.stamina = clamp(0, chack.stamina, 100)
     def add_map(self, map: Map):
         self.maps.append(map)

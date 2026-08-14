@@ -1,4 +1,3 @@
-import glob
 import os
 import shutil
 import subprocess
@@ -30,17 +29,19 @@ def clean_pycache(path="."):
                 print(f"Удален файл: {file_path}")
 
 def clean_build(path="."):
-    for root, dirs, files in os.walk(path):
+    for root, dirs, files in os.walk(path, topdown=True):
         if "build" in dirs:
             build_dir = os.path.join(root, "build")
             shutil.rmtree(build_dir)
             print(f"удалена папка build: {build_dir}")
-    search_pattern = os.path.join(path, "*.egg-info") 
-    
-    for egg in glob.glob(search_pattern):
-        egg_path = os.path.abspath(egg)
-        shutil.rmtree(egg_path)
-        print(f"удалена папка egg-info: {egg_path}")
+            dirs.remove("build")
+            
+        for d in list(dirs):
+            if d.endswith(".egg-info"):
+                egg_dir = os.path.join(root, d)
+                shutil.rmtree(egg_dir)
+                print(f"удалена папка egg-info: {egg_dir}")
+                dirs.remove(d)
 
 
 def main():

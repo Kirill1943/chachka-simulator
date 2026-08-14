@@ -2,6 +2,8 @@ import os
 import sys
 import typing
 
+from Game.Utils.cpp_utils.clamp import clamp_int as clamp
+
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from effects import baffes
@@ -19,7 +21,7 @@ class potion:
 
 class instant_regenerate_potion(potion):
     def __init__(self, effect_level, x, z):
-        super().__init__(max(1, min(effect_level, 5)), x, z)
+        super().__init__(clamp(1, effect_level, 5), x, z)
         self.effect = baffes.InstantRegeneration(self.level)
     def use(self, chachka_object: Chachka):
-        chachka_object.hp = max(0, min(chachka_object.hp + self.effect.hp_regenerate, 100))
+        chachka_object.hp = clamp(0, chachka_object.hp + self.effect.hp_regenerate, 100)
