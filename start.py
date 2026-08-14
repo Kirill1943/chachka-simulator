@@ -26,8 +26,11 @@ raw_log_path = os.path.join(*(GAME_CONFIG["Logging"]["LogPath"]))
 log_path = str(raw_log_path).format(Day=now.strftime("%d"), Month=now.strftime("%m"), Year=now.strftime("%Y"))
 
 os.makedirs(os.path.dirname(log_path), exist_ok=True)
-if not os.path.exists(log_path): open(log_path, "w", encoding="utf-8").close()
-else: open(log_path, "a", encoding="utf-8").write("-----\n")
+if not os.path.exists(log_path): 
+    open(log_path, "w", encoding="utf-8").close()
+else: 
+    with open(log_path, "a", encoding="utf-8") as file:
+        file.write("-----\n")
 if len(sys.argv) > 1 and sys.argv[1] == "--cheats":
     CHEATS = True
 else:
