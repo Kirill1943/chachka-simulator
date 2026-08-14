@@ -2,7 +2,7 @@ import os
 import sys
 import typing
 
-from Game.Utils.cpp_utils.clamp import clamp_int as clamp
+from Game.Utils.cpp_utils.clamp import clamp_double as clamp
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 

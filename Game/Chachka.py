@@ -7,6 +7,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 
 import Game.chachka_reanimation as reanim
 from Game.Utils.cpp_math import chachka_math
+from Game.Utils.cpp_utils.clamp import clamp_double
 from Game.Utils.cpp_utils.clamp import clamp_int as clamp
 from Game.Utils.ScanTools.scan import scan_map
 from Game.Utils.SortTools.sort_objects import sort_eat, sort_potions
@@ -48,7 +49,7 @@ class Chachka:
 
                 self.in_map.potions = [p for p in self.in_map.potions if p not in potions]
                 self.in_map.objects = [o for o in self.in_map.objects if o not in potions]
-    def eating(self, radius=3):
+    def eating(self, radius=1):
         if self.alive:
             try:
                 radius = clamp(1, abs(int(radius)), 3)
@@ -60,7 +61,7 @@ class Chachka:
                 eat = sort_eat(scan_map(distance=radius, Map=self.in_map, chachka_x=self.x, chachka_z=self.z))
                 for i in eat:
                     self.eat += i.eat
-                    self.eat = clamp(0, self.eat, 100)
+                    self.eat = clamp_double(0, self.eat, 100)
                     if i in self.in_map.objects:
                         self.in_map.objects.remove(i)
     def step(self, x, z):

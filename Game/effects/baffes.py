@@ -15,7 +15,7 @@ from Game.Utils.cpp_utils.clamp import clamp_int as clamp
 class InstantRegeneration(Buff):
     def __init__(self, level: int):
         self.effect = "Regen"
-        self.level = clamp(1, level, 5)
+        self.level = clamp(1, int(level), 5)
         
         hp_values = {
             1: 8,
