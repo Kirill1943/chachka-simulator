@@ -1,6 +1,7 @@
 ## добавлено
 
 * cpp-модуль расчетов
+* cpp-модуль ограничения значений (clamp)
 * pyproject.toml и setup.py
 * очистка папок egg-info и build интегрирована в manage.py
 

@@ -7,6 +7,11 @@ ext_modules = [
         ["src/Math/chachka_math.cpp"],
         include_dirs=["src/Math"],
     ),
+    Pybind11Extension(
+        "Game.Utils.cpp_utils.clamp",
+        ["src/Advanted/clamp.cpp"],
+        include_dirs=["src/Advanted"]
+    )
 ]
 
 setup(

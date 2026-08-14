@@ -74,9 +74,8 @@ class Chachka:
             minus_stamina = chachka_math.calculate_stamina(x, z)
 
             if self.stamina - minus_stamina <= 0:
-                overuse = minus_stamina - self.stamina
                 self.stamina = 0
-                self.hp -= overuse / 100 * 150
+                self.hp -= chachka_math.calculate_removed_hp(self.stamina, minus_stamina)
                 
                 if self.hp <= 0:
                     self.stamina, self.hp = 0, 0

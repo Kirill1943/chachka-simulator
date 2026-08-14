@@ -47,8 +47,9 @@ def main():
     if len(sys.argv) < 2:
         print(
             "Использование:\n"
-            "  python manage.py install\n"
-            "  python manage.py clean [cache|log]"
+            "  python manage.py install - установить зависимости\n",
+            "  python manage.py build - собрать (используется: pybind11)\n"
+            "  python manage.py clean [cache|log|build]"
         )
         return
 
@@ -62,6 +63,7 @@ def main():
             with open(requirements, "w", encoding="utf-8"):
                 pass
         subprocess.run([sys.executable, "-m", "pip", "install", "-r", requirements])
+    elif command == "build":
         subprocess.run([sys.executable, "setup.py", "build_ext", "--inplace"])
         clean_build()
 

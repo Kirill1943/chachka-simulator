@@ -36,10 +36,19 @@
 * ✅ имеется чит на пере-регенерацию карты
 
 ## запуск симулятора
+### установка
+
+* **Установить зависимости:** `python manage.py install`
+* **Собрать С++ расширения (Компилятор не нужен):** `python manage.py install`
+
+### запуск
 
 * **Запустить игру:** `python start.py`
 * **Запустить игру (читы):** `python start.py --cheats`
-* **Установить зависимости:** `python manage.py install`
+
+### очистка
+
+* **Очистка артефактов сборки:** `python manage.py clean build`
 * **Очистка логов:** `python manage.py clean log`
 * **Очистка кеша:** `python manage.py clean cache`
 * **Очистить и кеш и логи:** `python manage.py clean`
