@@ -155,10 +155,11 @@ def run():
             'Отрисовать карту (drawmap)',
             'Есть все что вокруг (eat)',
             'Сделать шаг (step)',
-            'Выпить зелья в радиусе 1 клетки (Use_potion / Use_potions)'
+            'Выпить зелья в радиусе 1 клетки (Use_potion / Use_potions)',
+            'крикнуть / викнуть'
         ]
         
-        cmd_keys = ['', 'info', 'drawmap', 'eat', 'step', 'use_potions']
+        cmd_keys = ['', 'info', 'drawmap', 'eat', 'step', 'use_potions', 'viy']
         
         if CHEATS:
             options.append('Открыть чит-меню (Cheat)')
@@ -167,13 +168,41 @@ def run():
         options.append('Выйти из игры (Exit)')
         cmd_keys.append('exit')
         
-        option, index = pick(options, menu_title, indicator='=>')
+        _, index = pick(options, menu_title, indicator='=>')
         
         cmd_key = cmd_keys[index]
         
         if cmd_key == 'exit':
             GameLog.info('Игра завершена пользователем', log_path)
             break
+        elif cmd_key == 'viy':
+            menu_title = "=== Выберите тип ==="
+            GameLog.info('пользователь выполнил команду ора чачки (viy / scream)', log_path)
+            text_options = [
+                'тихо викнуть',
+                'заорать'
+            ]
+            key_options = ["vi", "scream"]
+            _, index = pick(text_options, menu_title, indicator='=>')
+            option = key_options[index]
+            if option == "vi":
+                scream = input("насколько громко викнуть чачке? (от 1 до 5): ")
+                try:
+                    scream = max(1, min(5, int(scream)))
+                except (ValueError, TypeError):
+                    print("неверное значение")
+                    continue
+                pet.Viy(scream)
+            elif option == "scream":
+                scream = input("насколько громко заорать чачке? (от 8 до 15): ")
+                try:
+                    scream = max(8, min(15, int(scream)))
+                except (ValueError, TypeError):
+                    print("неверное значение")
+                    continue
+                pet.Scream(scream)
+
+            input("\nНажмите Enter, чтобы вернуться в меню...")
         else:
             COMMANDS[cmd_key](pet, Gameclass, map_game)
                 
