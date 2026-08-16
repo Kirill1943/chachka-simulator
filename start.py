@@ -5,6 +5,7 @@ import sys
 from typing import Any
 
 import rich
+from pick import pick
 
 from Game import Chachka
 from Game import logging as GameLog
@@ -25,8 +26,11 @@ raw_log_path = os.path.join(*(GAME_CONFIG["Logging"]["LogPath"]))
 log_path = str(raw_log_path).format(Day=now.strftime("%d"), Month=now.strftime("%m"), Year=now.strftime("%Y"))
 
 os.makedirs(os.path.dirname(log_path), exist_ok=True)
-if not os.path.exists(log_path): open(log_path, "w", encoding="utf-8").close()
-else: open(log_path, "a", encoding="utf-8").write("-----\n")
+if not os.path.exists(log_path): 
+    open(log_path, "w", encoding="utf-8").close()
+else: 
+    with open(log_path, "a", encoding="utf-8") as file:
+        file.write("-----\n")
 if len(sys.argv) > 1 and sys.argv[1] == "--cheats":
     CHEATS = True
 else:
@@ -44,11 +48,13 @@ def command_info(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
     print(f"прошло тиков времени: {Gameclass.ticks_passed}")
     print(f"Координаты чачки: X: {pet.x}, Z: {pet.z}")
     print(f"=============================")
+    input("\nНажмите Enter, чтобы вернуться в меню...")
 
 def command_eat(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
     GameLog.info(f"Пользователь Ввел команду поедания (eat)", log_path)
     print('чачка ест...')
     pet.eating()
+    input("\nНажмите Enter, чтобы вернуться в меню...")
 
 def command_step(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
     GameLog.info(f"Пользователь Ввел команду передвижения (step)", log_path)
@@ -60,6 +66,7 @@ def command_step(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
         print('некоректные координаты')
         return
     pet.step(x, z)
+    input("\nНажмите Enter, чтобы вернуться в меню...")
 
 def command_cheat(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
     GameLog.info(f"Пользователь открывает читы...", log_path)
@@ -67,17 +74,24 @@ def command_cheat(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
         print("===========================")
         cheat.run(Chack=pet, Map=map, logging_file_path=log_path)
         print("===========================")
+        input("\nНажмите Enter, чтобы вернуться в меню...")
     else:
         rich.print('[#FF0000] ERROR: Доступ запрещен - читы не включены')
         GameLog.access_denied('Пользователь попытался войти в вкладку читов но запустил игру без этой возможности', log_path)
+        input("\nНажмите Enter, чтобы вернуться в меню...")
 
 def command_drawmap(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
     GameLog.info(f"Пользователь Ввел команду отрисовки карты (drawmap)", log_path)
     draw_map.draw(map)
+    input("\nНажмите Enter, чтобы вернуться в меню...")
 
 def command_use_potions(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
     GameLog.info(f"Пользователь Ввел команду поглощения зелей (use_potion / s)", log_path)
     pet.use_potions()
+    input("\nНажмите Enter, чтобы вернуться в меню...")
+
+def Null_Method(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
+    pass
 
 COMMANDS = {
     "info": command_info,
@@ -87,16 +101,21 @@ COMMANDS = {
     "cheats": command_cheat,
     "drawmap": command_drawmap,
     "use_potion": command_use_potions,
-    "use_potions": command_use_potions
+    "use_potions": command_use_potions,
+    "": Null_Method
 }
 
 def run():
-    print('Выберите генерацию игры:')
-    print("-1. сложная генерация")
-    print('0. стандартная регенерация (по умолчанию)')
-    print('1. легкая генерация')
-    
-    generate_type = input().strip()
+    menu_title = "Выберите генерацию игры:"
+    options = [
+        "-1. сложная генерация",
+        "0. стандартная регенерация (по умолчанию)",
+        "1. легкая генерация"
+    ]
+    keys = ["-1", "0", "1"]
+    option, index = pick(options, menu_title, indicator='=>')
+    generate_type = keys[index]
+
     if generate_type not in ["-1", "0", "1"]:
         generate_type = "0"
 
@@ -109,11 +128,9 @@ def run():
 
     GameLog.info(f"Игра запущена, Выбран режим игры: {generate_type_txt}", log_path)
 
-    print('=== Chachka Simulator - симулятор чачки ===')
     if CHEATS: 
         rich.print('[#FFBB00][WARNING][/] Читы включены')
         GameLog.warning(f"Читы включены", log_path)
-    print('--- подготовка игры    ---')
 
     pet = Chachka.Chachka(age=0.5, x=0, z=0)
     map_game = maps.Map(x1=-5, x2=5, z1=-5, z2=5)
@@ -128,31 +145,67 @@ def run():
 
     Gameclass = ClassGame()
     Gameclass.add_map(map_game)
-    print('--- подготовка окончена ---')
     
     while True:
-        print("""
----
-Exit - выход,
-Info - информация об чачке,
-drawmap - отрисовать карту,
-eat - есть все что вокруг,
-Step - шаг,
-use_potion / use_potions - выпить зелья вокруг в радиусе 1 клетки
----""")
-        print("введите действие: ")
-        if CHEATS: 
-            rich.print('[#AAFF00](Читы активированы, Введите Cheat для открытия читов)')
+        menu_title = f"=== Симулятор Чачки ===\nХп: {round(pet.hp, 1)} | Сытость: {round(pet.eat, 1)} | Выносливость: {pet.stamina}\nКоординаты: X: {pet.x}, Z: {pet.z}\nВыберите действие:"
         
-        cmd = input().strip().lower()
+        options = [
+            'Пропустить ход',
+            'Информация об чачке (info)',
+            'Отрисовать карту (drawmap)',
+            'Есть все что вокруг (eat)',
+            'Сделать шаг (step)',
+            'Выпить зелья в радиусе 1 клетки (Use_potion / Use_potions)',
+            'крикнуть / викнуть'
+        ]
         
-        if cmd in COMMANDS:
-            COMMANDS[cmd](pet, Gameclass, map_game)
-        elif cmd == "exit":
+        cmd_keys = ['', 'info', 'drawmap', 'eat', 'step', 'use_potions', 'viy']
+        
+        if CHEATS:
+            options.append('Открыть чит-меню (Cheat)')
+            cmd_keys.append('cheat')
+
+        options.append('Выйти из игры (Exit)')
+        cmd_keys.append('exit')
+        
+        _, index = pick(options, menu_title, indicator='=>')
+        
+        cmd_key = cmd_keys[index]
+        
+        if cmd_key == 'exit':
+            GameLog.info('Игра завершена пользователем', log_path)
             break
+        elif cmd_key == 'viy':
+            menu_title = "=== Выберите тип ==="
+            GameLog.info('пользователь выполнил команду ора чачки (viy / scream)', log_path)
+            text_options = [
+                'тихо викнуть',
+                'заорать'
+            ]
+            key_options = ["vi", "scream"]
+            _, index = pick(text_options, menu_title, indicator='=>')
+            option = key_options[index]
+            if option == "vi":
+                scream = input("насколько громко викнуть чачке? (от 1 до 5): ")
+                try:
+                    scream = max(1, min(5, int(scream)))
+                except (ValueError, TypeError):
+                    print("неверное значение")
+                    continue
+                pet.Viy(scream)
+            elif option == "scream":
+                scream = input("насколько громко заорать чачке? (от 8 до 15): ")
+                try:
+                    scream = max(8, min(15, int(scream)))
+                except (ValueError, TypeError):
+                    print("неверное значение")
+                    continue
+                pet.Scream(scream)
+
+            input("\nНажмите Enter, чтобы вернуться в меню...")
         else:
-            print('такой команды нету')
-            GameLog.info('Пользователь ввел неверную команду', log_path)
+            COMMANDS[cmd_key](pet, Gameclass, map_game)
+                
         Gameclass.tick()
 
 

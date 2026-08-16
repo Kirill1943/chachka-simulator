@@ -24,12 +24,12 @@ class Chachka:
 
     def Viy(self, scream: int = 2):
         if self.alive:
-            scream = min(5, max(1, scream))
+            scream = max(1, min(5, scream))
             print(f"Чачка викает: В{'И' * scream}")
 
     def Scream(self, scream: int = 10):
         if self.alive:
-            scream = min(15, max(8, scream))
+            scream = max(8, min(15, scream))
             print(f"Чачка орет: В{'И' * scream}")
     def use_potions(self, radius=1):
         if self.alive:

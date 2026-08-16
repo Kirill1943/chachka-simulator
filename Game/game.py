@@ -14,6 +14,7 @@ class ClassGame:
                 chack.eat -= 0.3
                 chack.age += self.time / 100
                 if chack.hp <= 0:
+                    chack.alive = False
                     print("Чачка умирает! начинаем реанимирование...")
                     chack.hp = 0
                     reanim(chack)

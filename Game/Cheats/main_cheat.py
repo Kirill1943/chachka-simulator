@@ -2,6 +2,8 @@ import os
 import sys
 from typing import Any
 
+from pick import pick
+
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 from Game import logging as Log
@@ -11,48 +13,72 @@ from Game.Cheats import set_variable as cheat_set
 from Game.Map.maps import Map
 
 
+def hp_set(Chack, logging_file_path, Map: Map):
+    Log.info(f'пользователь выбрал чит: set_hp (изменение HP)', logging_file_path)
+    hp: Any = input("Введите количество hp (от 0 до 100): ")
+    try:
+        hp = int(hp)
+    except (ValueError, TypeError):
+        print('Некорректное количество HP, HP чачки остается прежним')
+    else:
+        cheat_set.set_chachka_hp(hp, chachka=Chack)
+    input("\nНажмите Enter для продолжения...")
+
+def eat_set(Chack, logging_file_path, Map: Map):
+    Log.info(f'пользователь выбрал чит: set_eat (изменение сытости)', logging_file_path)
+    eat: Any = input("Введите уровень сытости (от 0 до 100): ")
+    try:
+        eat = int(eat)
+    except (ValueError, TypeError):
+        print('Некорректное количество сытости, сытость чачки остается прежним')
+    else:
+        cheat_set.set_chachka_eat(eat, chachka=Chack)
+    input("\nНажмите Enter для продолжения...")
+
+def stamina_set(Chack, logging_file_path, Map: Map):
+    Log.info(f'пользователь выбрал чит: set_stamina (изменение стамины)', logging_file_path)
+    stamina: Any = input("Введите уровень стамины (от 0 до 100): ")
+    try:
+        stamina = int(stamina)
+    except (ValueError, TypeError):
+        print('Некорректное количество стамины, стамина чачки остается прежним')
+    else:
+        cheat_set.set_chachka_stamina(stamina, chachka=Chack)
+    input("\nНажмите Enter для продолжения...")
+
+def regen_map(Chack, logging_file_path, Map: Map):
+    Log.info(f'пользователь выбрал чит:  (перерегенерация карты)', logging_file_path)
+    cheat_map.regeneration(Map, mode=str(Map.gen_type))
+    input("\nНажмите Enter для продолжения...")
+
+COMMANDS = {
+    "set_hp": hp_set, 
+    "set_eat": eat_set,
+    "set_stamina": stamina_set,
+    "regen_map": regen_map
+}
+
 def run(Chack: Chachka, Map: Map, logging_file_path: str):
-    print("=== ЧИТЫ ===")
     while True:
         try:
-            print("[Изменить HP      ] set_hp, hp_set")
-            print("[Изменить сытость ] set_eat, eat_set")
-            print("[Изменить стамину ] set_stamina, stamina_set")
-            print("[Пере-реген. карты] regen_map, map_regen")
-            print("[ Нажмите Ctrl + C или введите exit для выхода из меню читов]")
-            cmd = input().strip().lower()
-            if cmd == "exit": 
+            print("\033[H\033[J", end="")
+            menu_title = "=== ЧИТЫ ==="
+            options = [
+                "[Изменить HP      ] set_hp, hp_set",
+                "[Изменить сытость ] set_eat, eat_set",
+                "[Изменить стамину ] set_stamina, stamina_set",
+                "[Пере-реген. карты] regen_map, map_regen",
+                "Выйти из меню читов (exit)"
+            ]
+            cmd_keys = ["set_hp", "set_eat", "set_stamina", "regen_map", "exit"]
+            
+            option, index = pick(options, menu_title, indicator='=>')
+            cmd = cmd_keys[index]
+            
+            if cmd == "exit":
                 break
-            if cmd in ["set_hp", "hp_set"]:
-                Log.info(f'пользователь выбрал чит: {cmd} (изменение HP)', logging_file_path)
-                hp: Any = input("Введите количество hp (от 0 до 100)")
-                try:
-                    hp = int(hp)
-                except (ValueError, TypeError):
-                    print('Некорректное количество HP, HP чачки остается прежним')
-                else:
-                    cheat_set.set_chachka_hp(hp, chachka=Chack)
-            elif cmd in ["set_eat", "eat_set"]:
-                Log.info(f'пользователь выбрал чит: {cmd} (изменение сытости)', logging_file_path)
-                eat: Any = input("Введите уровень сытости (от 0 до 100)")
-                try:
-                    eat = int(eat)
-                except (ValueError, TypeError):
-                    print('Некорректное количество сытости, сытость чачки остается прежним')
-                else:
-                    cheat_set.set_chachka_eat(eat, chachka=Chack)
-            elif cmd in ["set_stamina", "stamina_set"]:
-                Log.info(f'пользователь выбрал чит: {cmd} (изменение стамины)', logging_file_path)
-                stamina: Any = input("Введите уровень стамины (от 0 до 100)")
-                try:
-                    stamina = int(stamina)
-                except (ValueError, TypeError):
-                    print('Некорректное количество стамины, стамина чачки остается прежним')
-                else:
-                    cheat_set.set_chachka_stamina(stamina, chachka=Chack)
-            elif cmd in ["regen_map", "map_regen"]:
-                Log.info(f'пользователь выбрал чит: {cmd} (перерегенерация карты)', logging_file_path)
-                cheat_map.regeneration(Map, mode=str(Map.gen_type))
+            else:
+                COMMANDS[cmd](Chack, logging_file_path, Map)
 
         except KeyboardInterrupt:
             print('Выход...')

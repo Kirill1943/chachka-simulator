@@ -10,7 +10,6 @@ from Game.Map.maps import Map
 def regeneration(Map: Map, mode: str = "1"):
     mode = str(mode)
 
-    # 1. Спасаем Чачку в списке объектов
     only_chachka = []
     for i in Map.objects:
         if i.__class__.__name__ == "Chachka":
@@ -20,7 +19,6 @@ def regeneration(Map: Map, mode: str = "1"):
     if hasattr(Map, 'eat') and isinstance(Map.eat, list):
         Map.eat = []
 
-    # 3. Вызываем генераторы
     if mode == "-1":
         hardgen(Map)
     elif mode == "0":
