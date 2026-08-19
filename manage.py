@@ -3,6 +3,8 @@ import shutil
 import subprocess
 import sys
 
+from Game.Help import menu
+
 
 def clean_log():
     log_dir = os.path.abspath(
@@ -34,7 +36,8 @@ def main():
         print(
             "Использование:\n"
             "  python manage.py install\n"
-            "  python manage.py clean [cache|log]"
+            "  python manage.py clean [cache|log]\n"
+            "  python manage.py help"
         )
         return
 
@@ -65,6 +68,8 @@ def main():
                 "Чтобы удалить логи: python manage.py clean log\n"
                 "Чтобы удалить все сразу: python manage.py clean"
             )
+    elif command == "help":
+        menu.run()
 
 
 if __name__ == "__main__":

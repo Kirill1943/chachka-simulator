@@ -38,6 +38,7 @@
 
 ## запуск симулятора
 
+* **Помощь:** `python manage.py help`
 * **Запустить игру:** `python start.py`
 * **Запустить игру (читы):** `python start.py --cheats`
 * **Установить зависимости:** `python manage.py install`
