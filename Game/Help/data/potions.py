@@ -8,8 +8,8 @@ import structs as helpclasses
 INSTANT_REGENERATION_POTION = helpclasses.HelpPotionStruct(
     effect_name="instant regeneration",
     ru_effect_name="моментальная регенерация",
-    potion_name="instant regeneration potion",
-    ru_potion_name="зелье моментальной регенерации",
+    name="instant regeneration potion",
+    ru_name="зелье моментальной регенерации",
     color="#D20000",
     description="водянное безвкусное зелье регенерации, довольно красное. без вкуса но спасает от смерти",
     levels={

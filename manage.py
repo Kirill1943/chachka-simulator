@@ -3,8 +3,6 @@ import shutil
 import subprocess
 import sys
 
-from Game.Help import menu
-
 
 def clean_log():
     log_dir = os.path.abspath(
@@ -69,6 +67,7 @@ def main():
                 "Чтобы удалить все сразу: python manage.py clean"
             )
     elif command == "help":
+        from Game.Help import menu
         menu.run()
 
 
