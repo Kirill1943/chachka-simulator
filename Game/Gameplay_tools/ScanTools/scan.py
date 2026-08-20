@@ -5,7 +5,7 @@ import rich
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from Game.Map.maps import Map
+from Game.Gameplay.Map.maps import Map
 
 
 def scan_map(Map: Map, distance: int, chachka_x: int, chachka_z: int):

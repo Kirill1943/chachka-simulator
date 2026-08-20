@@ -3,8 +3,8 @@ import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from Game.items.Eat_items import Base_Eat
-from Game.items.Potion_items import potion
+from Game.Gameplay.items.Eat_items import Base_Eat
+from Game.Gameplay.items.Potion_items import potion
 
 
 def sort_eat(objects: list):

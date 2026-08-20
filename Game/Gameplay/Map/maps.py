@@ -4,10 +4,10 @@ import typing
 
 import rich
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")))
 
-from Game.items import Eat_items as eat
-from Game.items import Potion_items as potions
+from Game.Gameplay.items import Eat_items as eat
+from Game.Gameplay.items import Potion_items as potions
 
 if typing.TYPE_CHECKING:
     from Game import Chachka

@@ -1,5 +1,5 @@
 from Game.chachka_reanimation import reanim
-from Game.Map.maps import Map
+from Game.Gameplay.Map.maps import Map
 
 
 class ClassGame:

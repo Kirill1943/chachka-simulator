@@ -1,7 +1,7 @@
-import datetime
 import json
 import os
 import sys
+from datetime import datetime
 from typing import Any
 
 import rich
@@ -11,15 +11,15 @@ from Game import Chachka
 from Game import logging as GameLog
 from Game.Cheats import main_cheat as cheat
 from Game.game import ClassGame
-from Game.Map import gen_map, maps
-from Game.UI import drawing_map_GUI as draw_map
+from Game.Gameplay.Map import gen_map, maps
+from Game.UI.GUI import drawing_map as draw_map
 
 CONFIG_PATH = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Config"))
 
 with open(os.path.join(CONFIG_PATH, "Game.json"), "r", encoding="utf-8") as file:
     GAME_CONFIG = json.load(file)
 
-now = datetime.datetime.now()
+now = datetime.now()
 
 raw_log_path = os.path.join(*(GAME_CONFIG["Logging"]["LogPath"]))
 
@@ -38,8 +38,8 @@ else:
 
 
 def command_info(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
-    GameLog.info(f"Пользователь Ввел команду информации об чачке (info)", log_path)
-    print(f"==== ИНФОРМАЦИЯ ОБ ЧАЧКЕ ====")
+    GameLog.info("Пользователь Ввел команду информации об чачке (info)", log_path)
+    print("==== ИНФОРМАЦИЯ ОБ ЧАЧКЕ ====")
     status = "здоровая" if pet.hp >= 80 else "несильно повреждена" if pet.hp >= 60 else "повреждена" if pet.hp >= 20 else "критически повреждена" if pet.hp >= 5 else "почти умерла"
     print(f"Хп: {pet.hp}, Статус: {status}")
     print(f"Голод: {pet.eat}")
@@ -47,17 +47,17 @@ def command_info(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
     print(f"Выносливость: {pet.stamina}")
     print(f"прошло тиков времени: {Gameclass.ticks_passed}")
     print(f"Координаты чачки: X: {pet.x}, Z: {pet.z}")
-    print(f"=============================")
+    print("=============================")
     input("\nНажмите Enter, чтобы вернуться в меню...")
 
 def command_eat(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
-    GameLog.info(f"Пользователь Ввел команду поедания (eat)", log_path)
+    GameLog.info("Пользователь Ввел команду поедания (eat)", log_path)
     print('чачка ест...')
     pet.eating()
     input("\nНажмите Enter, чтобы вернуться в меню...")
 
 def command_step(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
-    GameLog.info(f"Пользователь Ввел команду передвижения (step)", log_path)
+    GameLog.info("Пользователь Ввел команду передвижения (step)", log_path)
     x: Any = input("введите насколько передвинуться чачке по X: ")
     z: Any = input("введите насколько передвинуться чачке по Z: ")
     try:
@@ -69,7 +69,7 @@ def command_step(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
     input("\nНажмите Enter, чтобы вернуться в меню...")
 
 def command_cheat(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
-    GameLog.info(f"Пользователь открывает читы...", log_path)
+    GameLog.info("Пользователь открывает читы...", log_path)
     if CHEATS:
         print("===========================")
         cheat.run(Chack=pet, Map=map, logging_file_path=log_path)
@@ -81,12 +81,12 @@ def command_cheat(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
         input("\nНажмите Enter, чтобы вернуться в меню...")
 
 def command_drawmap(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
-    GameLog.info(f"Пользователь Ввел команду отрисовки карты (drawmap)", log_path)
+    GameLog.info("Пользователь Ввел команду отрисовки карты (drawmap)", log_path)
     draw_map.draw(map)
     input("\nНажмите Enter, чтобы вернуться в меню...")
 
 def command_use_potions(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
-    GameLog.info(f"Пользователь Ввел команду поглощения зелей (use_potion / s)", log_path)
+    GameLog.info("Пользователь Ввел команду поглощения зелей (use_potion / s)", log_path)
     pet.use_potions()
     input("\nНажмите Enter, чтобы вернуться в меню...")
 
@@ -130,7 +130,7 @@ def run():
 
     if CHEATS: 
         rich.print('[#FFBB00][WARNING][/] Читы включены')
-        GameLog.warning(f"Читы включены", log_path)
+        GameLog.warning("Читы включены", log_path)
 
     pet = Chachka.Chachka(age=0.5, x=0, z=0)
     map_game = maps.Map(x1=-5, x2=5, z1=-5, z2=5)
