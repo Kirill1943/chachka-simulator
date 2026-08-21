@@ -28,15 +28,17 @@ def clean_pycache(path="."):
                 os.remove(file_path)
                 print(f"Удален файл: {file_path}")
 
+def check_commands():
+    print(
+        "Использование:\n"
+        "  python manage.py install\n"
+        "  python manage.py clean [cache|log]\n"
+        "  python manage.py help"
+    )
 
 def main():
     if len(sys.argv) < 2:
-        print(
-            "Использование:\n"
-            "  python manage.py install\n"
-            "  python manage.py clean [cache|log]\n"
-            "  python manage.py help"
-        )
+        check_commands()
         return
 
     command = sys.argv[1]
@@ -69,6 +71,9 @@ def main():
     elif command == "help":
         from Game.Help import menu
         menu.run()
+    else:
+        print("Вы ввели несуществующую команду")
+        check_commands()
 
 
 if __name__ == "__main__":

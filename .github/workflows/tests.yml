@@ -1,9 +1,9 @@
 name: Авто-тест симулятора чачки
 on:
   push:
-    branches: ["main", "development", "feature/interactive-help"]
+    branches: ["main", "development"]
   pull_request:
-    branches: ["main", "development", "feature/interactive-help"]
+    branches: ["main", "development"]
 
 jobs:
   lint-and-test:

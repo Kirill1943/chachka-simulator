@@ -37,7 +37,7 @@ else:
     CHEATS = False
 
 
-def command_info(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
+def command_info(pet: Chachka.Chachka, Gameclass: ClassGame, **k):
     GameLog.info("Пользователь Ввел команду информации об чачке (info)", log_path)
     print("==== ИНФОРМАЦИЯ ОБ ЧАЧКЕ ====")
     status = "здоровая" if pet.hp >= 80 else "несильно повреждена" if pet.hp >= 60 else "повреждена" if pet.hp >= 20 else "критически повреждена" if pet.hp >= 5 else "почти умерла"
@@ -50,13 +50,13 @@ def command_info(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
     print("=============================")
     input("\nНажмите Enter, чтобы вернуться в меню...")
 
-def command_eat(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
+def command_eat(pet: Chachka.Chachka, **k):
     GameLog.info("Пользователь Ввел команду поедания (eat)", log_path)
     print('чачка ест...')
     pet.eating()
     input("\nНажмите Enter, чтобы вернуться в меню...")
 
-def command_step(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
+def command_step(pet: Chachka.Chachka, **k):
     GameLog.info("Пользователь Ввел команду передвижения (step)", log_path)
     x: Any = input("введите насколько передвинуться чачке по X: ")
     z: Any = input("введите насколько передвинуться чачке по Z: ")
@@ -68,7 +68,7 @@ def command_step(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
     pet.step(x, z)
     input("\nНажмите Enter, чтобы вернуться в меню...")
 
-def command_cheat(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
+def command_cheat(pet: Chachka.Chachka, map: maps.Map, **k):
     GameLog.info("Пользователь открывает читы...", log_path)
     if CHEATS:
         print("===========================")
@@ -80,17 +80,17 @@ def command_cheat(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
         GameLog.access_denied('Пользователь попытался войти в вкладку читов но запустил игру без этой возможности', log_path)
         input("\nНажмите Enter, чтобы вернуться в меню...")
 
-def command_drawmap(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
+def command_drawmap(map: maps.Map, **k):
     GameLog.info("Пользователь Ввел команду отрисовки карты (drawmap)", log_path)
     draw_map.draw(map)
     input("\nНажмите Enter, чтобы вернуться в меню...")
 
-def command_use_potions(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
+def command_use_potions(pet: Chachka.Chachka, **k):
     GameLog.info("Пользователь Ввел команду поглощения зелей (use_potion / s)", log_path)
     pet.use_potions()
     input("\nНажмите Enter, чтобы вернуться в меню...")
 
-def Null_Method(pet: Chachka.Chachka, Gameclass: ClassGame, map: maps.Map):
+def Null_Method(**k):
     pass
 
 COMMANDS = {
@@ -204,7 +204,7 @@ def run():
 
             input("\nНажмите Enter, чтобы вернуться в меню...")
         else:
-            COMMANDS[cmd_key](pet, Gameclass, map_game)
+            COMMANDS[cmd_key](pet=pet, Gameclass=Gameclass, map=map_game)
                 
         Gameclass.tick()
 
