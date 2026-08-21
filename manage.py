@@ -34,7 +34,8 @@ def main():
         print(
             "Использование:\n"
             "  python manage.py install\n"
-            "  python manage.py clean [cache|log]"
+            "  python manage.py clean [cache|log]\n"
+            "  python manage.py help"
         )
         return
 
@@ -65,6 +66,9 @@ def main():
                 "Чтобы удалить логи: python manage.py clean log\n"
                 "Чтобы удалить все сразу: python manage.py clean"
             )
+    elif command == "help":
+        from Game.Help import menu
+        menu.run()
 
 
 if __name__ == "__main__":
