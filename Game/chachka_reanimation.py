@@ -8,7 +8,30 @@ import rich
 from pick import pick
 
 
+def check_immune(cheats_conf):
+    with open(cheats_conf, "r", encoding="utf-8") as file:
+        conf = dict(json.load(file))
+        return conf.get("immortality", None)
+
 def reanim(chachka):
+    cheats_conf = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Config", "Cheats.json"))
+
+    is_immortality = check_immune(cheats_conf)
+    
+    if is_immortality is None:
+        is_immortality = False
+        
+        try:
+            with open(cheats_conf, "r", encoding="utf-8") as file:
+                conf = json.load(file)
+        except Exception:
+            conf = {}
+            
+        conf["immortality"] = False
+        
+        with open(cheats_conf, "w", encoding="utf-8") as file:
+            json.dump(conf, file, indent=4, ensure_ascii=False)
+
     if chachka.__class__.__name__ != "Chachka":
         return
         
@@ -19,6 +42,15 @@ def reanim(chachka):
         rich.print("[#00FF00]Чачка посмотрела на тебя с недоумением, и спросила: Вии! вии ви вии? (эй! слушай зачем мне сердечный массаж сейчас?)[/]")
         return
 
+    if is_immortality:
+        rich.print("[#FF0000][!][/] Бессмертие активно, восстановление чачки с того света...")
+        chachka.hp = 100
+        chachka.eat = 100
+        chachka.stamina = 100
+        chachka.alive = True
+        rich.print("[#00FF00]Чачка успешно восстановлена!")
+        input("Вернуться к меню...")
+        return
     history_text = "🚨 РЕАНИМАЦИЯ! Тыкай Enter ровно в ритм (каждые 2 секунды)! 🚨\n\n"
 
     rich.print("\n[#FF0000]🚨 РЕАНИМАЦИЯ! Тыкай Enter ровно в ритм (каждые 2 секунды)! 🚨[/]")
@@ -78,19 +110,7 @@ def reanim(chachka):
         _, revive_index = pick(revive_options, death_title, indicator="=>")
         
         if revive_index == 0:
-            pth = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Config", "Chachka.json"))
-            
-            if os.path.exists(pth):
-                with open(pth, "r", encoding="utf-8") as file:
-                    Settings = dict(json.load(file))
-                if Settings.get("Save_Chachka", False):
-                    rich.print("[#00FF00]Я тебя услышал... восстановление в сохранение...[/]")
-                    # TODO: реализовать сохранение настроек
-                    input("\nНажмите Enter для продолжения...")
-                    return
-            
-            rich.print('[#FF0000]Я бы мог, но ты не настроил конфиг на бессмертность чачки... Game Over[/]')
-            sys.exit()
+            rich.print("[FF0000] невозможно...")
         else:
             rich.print("[#AAAAAA]Нет?.. Поверь — ты мог попробовать, но ты не захотел.[/]")
             sys.exit()

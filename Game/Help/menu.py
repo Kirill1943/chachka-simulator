@@ -1,7 +1,6 @@
 from pick import pick
 from rich import print as rprint
 
-from . import structs as helpstruct
 from .check_info import check_eat_info, check_potion_info
 from .data import eat, potions
 

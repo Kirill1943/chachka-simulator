@@ -13,16 +13,20 @@ class ClassGame:
                 chack.stamina += 1.5
                 chack.eat -= 0.3
                 chack.age += self.time / 100
+                
+                if chack.eat < 0:
+                    hp_spent = abs(chack.eat) / 5
+                    chack.hp -= hp_spent
+                
                 if chack.hp <= 0:
                     chack.alive = False
                     print("Чачка умирает! начинаем реанимирование...")
                     chack.hp = 0
+                    print("------")
                     reanim(chack)
-                if chack.eat < 0:
-                    hp_spent = abs(chack.eat) / 5
-                    print("Чачка истощена. ей нужно поесть иначе она начнет получать урон")
-                    chack.hp -= hp_spent
+                
                 self.fix(chack)
+                
         self.ticks_passed += self.time
     def fix(self, chack):
         """

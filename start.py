@@ -68,11 +68,11 @@ def command_step(pet: Chachka.Chachka, **k):
     pet.step(x, z)
     input("\nНажмите Enter, чтобы вернуться в меню...")
 
-def command_cheat(pet: Chachka.Chachka, map: maps.Map, **k):
+def command_cheat(pet: Chachka.Chachka, map: maps.Map, conf_path: str, **k):
     GameLog.info("Пользователь открывает читы...", log_path)
     if CHEATS:
         print("===========================")
-        cheat.run(Chack=pet, Map=map, logging_file_path=log_path)
+        cheat.run(Chack=pet, Map=map, logging_file_path=log_path, config_path=conf_path)
         print("===========================")
         input("\nНажмите Enter, чтобы вернуться в меню...")
     else:
@@ -145,8 +145,10 @@ def run():
 
     Gameclass = ClassGame()
     Gameclass.add_map(map_game)
-    
+
+    cheat_config = os.path.abspath(os.path.join("Config", "Cheats.json"))
     while True:
+        print("\033[H\033[J", end="")
         menu_title = f"=== Симулятор Чачки ===\nХп: {round(pet.hp, 1)} | Сытость: {round(pet.eat, 1)} | Выносливость: {pet.stamina}\nКоординаты: X: {pet.x}, Z: {pet.z}\nВыберите действие:"
         
         options = [
@@ -204,7 +206,7 @@ def run():
 
             input("\nНажмите Enter, чтобы вернуться в меню...")
         else:
-            COMMANDS[cmd_key](pet=pet, Gameclass=Gameclass, map=map_game)
+            COMMANDS[cmd_key](pet=pet, Gameclass=Gameclass, map=map_game, conf_path=cheat_config)
                 
         Gameclass.tick()
 
