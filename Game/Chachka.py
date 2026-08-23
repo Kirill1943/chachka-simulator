@@ -46,6 +46,13 @@ class Chachka:
 
                 self.in_map.potions = [p for p in self.in_map.potions if p not in potions]
                 self.in_map.objects = [o for o in self.in_map.objects if o not in potions]
+    def speed_eating(self, eat):
+        """
+        предназначено только для тестов, 
+        быстро прибавляет к счетчику self.eat 
+        значение минуя полноценное поедание
+        """
+        self.eat = max(0, min(self.eat + eat, 100))
     def eating(self, radius=1):
         if self.alive:
             try:
