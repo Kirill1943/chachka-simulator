@@ -2,11 +2,11 @@ import os
 import secrets
 import sys
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")))
 
-from Game.items import Eat_items as eat
-from Game.items import Potion_items as potions
-from Game.Map import maps
+from Game.Gameplay.items import Eat_items as eat
+from Game.Gameplay.items import Potion_items as potions
+from Game.Gameplay.Map import maps
 
 
 def hardgen(Map: maps.Map):

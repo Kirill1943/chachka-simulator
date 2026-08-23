@@ -3,8 +3,8 @@ import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from Game.Map.gen_map import basegen, eazygen, hardgen
-from Game.Map.maps import Map
+from Game.Gameplay.Map.gen_map import basegen, eazygen, hardgen
+from Game.Gameplay.Map.maps import Map
 
 
 def regeneration(Map: Map, mode: str = "1"):

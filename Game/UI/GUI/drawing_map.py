@@ -6,9 +6,9 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 import tkinter as tk
 
 from Game.Chachka import Chachka
-from Game.items import Eat_items as eat
-from Game.items import Potion_items as potion
-from Game.Map.maps import Map
+from Game.Gameplay.items import Eat_items as eat
+from Game.Gameplay.items import Potion_items as potion
+from Game.Gameplay.Map.maps import Map
 
 
 def draw(map_instance: Map):
