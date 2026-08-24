@@ -34,7 +34,7 @@ def test_chachka_overuse(fixture_create_chachka, fixture_create_map):
     assert chachka.hp < 100
     assert chachka.alive is True
 
-def test_chachka_map_borders(fixture_create_chachka, fixture_create_map):
+def test_chachka_step_borders(fixture_create_chachka, fixture_create_map):
     chachka = fixture_create_chachka()
     create_map = fixture_create_map(x1=-3, x2=3, z1=-3, z2=3)
     chachka.in_map = create_map

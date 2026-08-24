@@ -24,11 +24,19 @@ class Chachka:
 
     def Viy(self, scream: int = 2):
         if self.alive:
+            try:
+                scream = int(scream)
+            except (ValueError, TypeError):
+                scream = 2
             scream = max(1, min(5, scream))
             print(f"Чачка викает: В{'И' * scream}")
 
     def Scream(self, scream: int = 10):
         if self.alive:
+            try:
+                scream = int(scream)
+            except (ValueError, TypeError):
+                scream = 10
             scream = max(8, min(15, scream))
             print(f"Чачка орет: В{'И' * scream}")
     def use_potions(self, radius=1):
@@ -75,6 +83,10 @@ class Chachka:
                         self.in_map.objects.remove(i)
     def step(self, x, z):
         if self.alive:
+            try:
+                x, z = int(x), int(z)
+            except (ValueError, TypeError):
+                x, z = 0, 0
             x, z = max(-3, min(x, 3)), max(-3, min(z, 3))
             self.x += x
             self.z += z
