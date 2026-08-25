@@ -1,11 +1,26 @@
 
 
-def test_chachka_eating(fixture_create_chachka):
+def test_chachka_speed_eating(fixture_create_chachka):
     chachka = fixture_create_chachka()
-    chachka.eat = 15
-    chachka.speed_eating(50)
+    chachka.eat = 50
+    chachka.speed_eating(60)
 
-    assert chachka.eat == 65
+    assert chachka.eat == 100
+
+def test_chachka_eating(fixture_create_chachka, fixture_create_map, fixture_create_eat):
+    chachka = fixture_create_chachka()
+    chachka.eat = 85
+    created_map = fixture_create_map(x1=-3, x2=3, z1=-3, z2=3)
+    chachka.in_map = created_map
+
+    created_map.link_eat(fixture_create_eat(10, 1, 1))
+    created_map.link_eat(fixture_create_eat(10, -1, -1))
+
+    chachka.eating()
+
+    assert len(created_map.eat) == 1
+    assert chachka.eat == 95
+
 
 def test_chachka_death(fixture_create_chachka):
     chachka = fixture_create_chachka()

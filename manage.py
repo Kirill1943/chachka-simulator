@@ -31,6 +31,7 @@ def clean_pycache(path="."):
 def check_commands():
     print(
         "Использование:\n"
+        "  python manage.py test\n"
         "  python manage.py install\n"
         "  python manage.py clean [cache|log]\n"
         "  python manage.py help"
@@ -71,6 +72,13 @@ def main():
     elif command == "help":
         from Game.Help import menu
         menu.run()
+    elif command == "tests":
+        try:
+            import pytest
+        except ImportError:
+            print("У вас не установлена библиотека pytest, для установки напишите: pip install pytest")
+            return
+        subprocess.run(["pytest", "tests"])
     else:
         print("Вы ввели несуществующую команду")
         check_commands()

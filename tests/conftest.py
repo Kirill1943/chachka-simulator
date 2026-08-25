@@ -6,7 +6,8 @@ import pytest
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from Game.Chachka import Chachka
-from Game.Gameplay.items import Eat_items
+from Game.Gameplay.items.Eat_items import Base_Eat
+from Game.Gameplay.items.Potion_items import potion
 from Game.Gameplay.Map.maps import Map
 
 
@@ -28,6 +29,12 @@ def fixture_create_map():
 
 @pytest.fixture
 def fixture_create_eat():
-    def _make_eat(eat_count):
-        return Eat_items.Base_Eat(0, 0, eat_count)
+    def _make_eat(eat_level: int, x: int = 0, z: int = 0):
+        return Base_Eat(x=x, z=z, eat=eat_level)
     return _make_eat
+
+@pytest.fixture
+def fixture_create_potion():
+    def _make_potion(effect_level: int, x: int = 0, z: int = 0):
+        return potion(effect_level=effect_level, x=z, z=z)
+    return _make_potion

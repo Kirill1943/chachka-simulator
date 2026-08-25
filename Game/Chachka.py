@@ -75,12 +75,20 @@ class Chachka:
                     return
                 eat = sort_eat(scan_map(distance=radius, Map=self.in_map, chachka_x=self.x, chachka_z=self.z))
                 for i in eat:
+                    if (self.eat + i.eat) >= 100:
+                        return
+                    
                     self.eat += i.eat
                     self.eat = max(0, min(self.eat, 100))
-                    if self.eat == 100:
-                        return
+                    
                     if i in self.in_map.objects:
                         self.in_map.objects.remove(i)
+                    if i in self.in_map.eat:
+                        self.in_map.eat.remove(i)
+                        
+                    if self.eat >= 100:
+                        self.eat = 100
+                        return
     def step(self, x, z):
         if self.alive:
             try:
