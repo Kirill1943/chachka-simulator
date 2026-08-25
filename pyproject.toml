@@ -1,0 +1,19 @@
+[project]
+name = "chachka-simulator"
+version = "0.2.0"
+description = "мелкая консольная игра"
+requires-python = ">=3.10"
+dependencies = [
+    "rich",
+    "pick"
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "mypy",
+    "bandit"
+]
+
+[tool.setuptools]
+packages = ["Game"]
