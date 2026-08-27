@@ -1,11 +1,7 @@
-import os
-import sys
-
 import pytest
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from Game.Chachka import Chachka
+from Game.game import ClassGame
 from Game.Gameplay.items.Eat_items import Base_Eat
 from Game.Gameplay.items.Potion_items import potion
 from Game.Gameplay.Map.maps import Map
@@ -38,3 +34,9 @@ def fixture_create_potion():
     def _make_potion(effect_level: int, x: int = 0, z: int = 0):
         return potion(effect_level=effect_level, x=z, z=z)
     return _make_potion
+
+@pytest.fixture
+def fixture_create_game():
+    def _make_gameclass():
+        return ClassGame()
+    return _make_gameclass

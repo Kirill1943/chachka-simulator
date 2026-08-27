@@ -1,5 +1,7 @@
+import pytest
 
 
+@pytest.mark.gameplay
 def test_chachka_speed_eating(fixture_create_chachka):
     chachka = fixture_create_chachka()
     chachka.eat = 50
@@ -7,6 +9,7 @@ def test_chachka_speed_eating(fixture_create_chachka):
 
     assert chachka.eat == 100
 
+@pytest.mark.gameplay
 def test_chachka_eating(fixture_create_chachka, fixture_create_map, fixture_create_eat):
     chachka = fixture_create_chachka()
     chachka.eat = 85
@@ -21,7 +24,7 @@ def test_chachka_eating(fixture_create_chachka, fixture_create_map, fixture_crea
     assert len(created_map.eat) == 1
     assert chachka.eat == 95
 
-
+@pytest.mark.gameplay
 def test_chachka_death(fixture_create_chachka):
     chachka = fixture_create_chachka()
     chachka.hp = 0
@@ -34,6 +37,7 @@ def test_chachka_death(fixture_create_chachka):
     assert chachka.step(x=1, z=1) is None
     assert chachka.set_size([2, 2, 2]) is None
 
+@pytest.mark.gameplay
 def test_chachka_overuse(fixture_create_chachka, fixture_create_map):
     chachka = fixture_create_chachka()
     chachka.stamina = 2
@@ -49,6 +53,7 @@ def test_chachka_overuse(fixture_create_chachka, fixture_create_map):
     assert chachka.hp < 100
     assert chachka.alive is True
 
+@pytest.mark.gameplay
 def test_chachka_step_borders(fixture_create_chachka, fixture_create_map):
     chachka = fixture_create_chachka()
     create_map = fixture_create_map(x1=-3, x2=3, z1=-3, z2=3)

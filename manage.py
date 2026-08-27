@@ -20,7 +20,7 @@ def clean_pycache(path="."):
         if "__pycache__" in dirs:
             pycache_path = os.path.join(root, "__pycache__")
             shutil.rmtree(pycache_path)
-            print(f"Удален кеш: {pycache_path}")
+            print(f"Удален pycache: {pycache_path}")
 
         for file in files:
             if file.endswith(".pyc"):
@@ -28,10 +28,32 @@ def clean_pycache(path="."):
                 os.remove(file_path)
                 print(f"Удален файл: {file_path}")
 
+import os
+import shutil
+
+
+def clean_cache(path="."):
+    cache_dir = os.path.join(path, "cache")
+
+    if os.path.isdir(cache_dir):
+        for item in os.listdir(cache_dir):
+            item_path = os.path.join(cache_dir, item)
+            
+            try:
+                if os.path.isdir(item_path):
+                    shutil.rmtree(item_path)
+                else:
+                    os.remove(item_path)
+                print(f"Удален кеш: {item_path}")
+            except Exception as e:
+                print(f"Не удалось удалить {item_path}: {e}")
+    else:
+        print(f"Папка с кешем не найдена")
+
 def check_commands():
     print(
         "Использование:\n"
-        "  python manage.py test\n"
+        "  python manage.py test (требуется pytest)\n"
         "  python manage.py install\n"
         "  python manage.py clean [cache|log]\n"
         "  python manage.py help"
@@ -59,8 +81,10 @@ def main():
         if sub_command == "all":
             clean_log()
             clean_pycache()
+            clean_cache()
         elif sub_command in ["pycache", "cache"]:
             clean_pycache()
+            clean_cache()
         elif sub_command in ["logs", "log"]:
             clean_log()
         else:
@@ -72,13 +96,14 @@ def main():
     elif command == "help":
         from Game.Help import menu
         menu.run()
-    elif command == "tests":
-        try:
-            import pytest
-        except ImportError:
-            print("У вас не установлена библиотека pytest, для установки напишите: pip install pytest")
+    elif command == "test":
+        import importlib.util
+
+        if importlib.util.find_spec("pytest") is None:
+            print("У вас не установлена библиотека pytest. Для установки напишите: pip install pytest")
             return
-        subprocess.run(["pytest", "tests"])
+            
+        subprocess.run([sys.executable, "-m", "pytest"])
     else:
         print("Вы ввели несуществующую команду")
         check_commands()
