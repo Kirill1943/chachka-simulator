@@ -32,7 +32,7 @@ def fixture_create_eat():
 @pytest.fixture
 def fixture_create_potion():
     def _make_potion(effect_level: int, x: int = 0, z: int = 0):
-        return potion(effect_level=effect_level, x=z, z=z)
+        return potion(effect_level=effect_level, x=x, z=z)
     return _make_potion
 
 @pytest.fixture

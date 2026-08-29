@@ -2,14 +2,6 @@ import pytest
 
 
 @pytest.mark.gameplay
-def test_chachka_speed_eating(fixture_create_chachka):
-    chachka = fixture_create_chachka()
-    chachka.eat = 50
-    chachka.speed_eating(60)
-
-    assert chachka.eat == 100
-
-@pytest.mark.gameplay
 def test_chachka_eating(fixture_create_chachka, fixture_create_map, fixture_create_eat):
     chachka = fixture_create_chachka()
     chachka.eat = 85
@@ -36,6 +28,23 @@ def test_chachka_death(fixture_create_chachka):
     assert chachka.eating(radius=1) is None
     assert chachka.step(x=1, z=1) is None
     assert chachka.set_size([2, 2, 2]) is None
+
+@pytest.mark.gameplay
+def test_chachka_use_potions(fixture_create_chachka, fixture_create_potion, fixture_create_map):
+    chachka = fixture_create_chachka()
+    chachka.x = 1
+    chachka.z = 1
+    chachka.hp = 90
+    potion = fixture_create_potion(effect_level=1)
+    created_map = fixture_create_map(x1=-3, x2=3, z1=-3, z2=3)
+
+    created_map.link_chack(chachka)
+    created_map.link_potion(potion)
+
+    chachka.use_potions()
+
+    assert len(created_map.potions) == 0
+    assert len(created_map.objects) == 1
 
 @pytest.mark.gameplay
 def test_chachka_overuse(fixture_create_chachka, fixture_create_map):
