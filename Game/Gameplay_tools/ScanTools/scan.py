@@ -21,5 +21,4 @@ def scan_map(Map: Map, distance: int, chachka_x: int, chachka_z: int):
                 obj = Map.get_object(x, z)
                 if obj is not None:
                     objects.append(obj)
-                    
     return objects

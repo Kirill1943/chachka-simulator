@@ -14,6 +14,22 @@ dev = [
     "mypy",
     "bandit"
 ]
+tests = [
+    "pytest",
+    "pytest-sugar"
+]
 
 [tool.setuptools]
 packages = ["Game"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+addopts = "-v --tb=short"
+norecursedirs = ["build", "dist", ".pytest_cache", "cache/", ".venv", ".git"]
+cache_dir = "cache/pytest_cache"
+
+markers = [
+    "gameplay: тест самой игры, и геймплея",
+    "input_invalid_values: тестирование при невалидных значениях",
+    "utils: тест вспомогательных утилит (Game/Gameplay_tools)"
+]
