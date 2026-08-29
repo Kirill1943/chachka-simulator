@@ -45,3 +45,7 @@ ehthumbs.db
 # =====================================================================
 .ruff_cache/
 .mypy_cache/
+.pytest_cache/
+.coverage
+
+cache/
