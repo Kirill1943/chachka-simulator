@@ -9,6 +9,7 @@ from pick import pick
 
 from Game import Chachka
 from Game import logging as GameLog
+from Game import saves
 from Game.Cheats import main_cheat as cheat
 from Game.game import ClassGame
 from Game.Gameplay.Map import gen_map, maps
@@ -37,8 +38,43 @@ else:
     CHEATS = False
 
 
+def save_chachka(pet: Chachka.Chachka, **k):
+    target_dir = os.path.join(".", "saves")
+    
+    def _check_dir(filename):
+        full_path = os.path.join(target_dir, filename)
+        
+        if os.path.isdir(full_path):
+            return None
+        return filename
+        
+    files = list(filter(None, map(_check_dir, os.listdir(target_dir))))
+    files.append("Новый файл")
+
+    keys = [*files[:-1], "new"] 
+    option, index = pick(files, title="--- Выберите файл сохранения (выбранный файл будет перезаписан!)", indicator="->")
+    key = keys[index]
+
+    if key == "new":
+        newfile = True
+        shutfix = ".chachka_simulator.save"
+        filename = f"{input('выберите имя файла сохранения (без расширения): ')}{shutfix}"
+        final_save_path = os.path.join(target_dir, filename)
+    else:
+        newfile = False
+        final_save_path = os.path.join(target_dir, key)
+    if not newfile:
+        if input("вы уверены? [y/N]: ").lower().strip() not in ["y", "н", "д"]:
+            rich.print("[#FFFF00][ОТМЕНА][/] Сохранение отменено.")
+            return
+
+        if input("вы ТОЧНО УВЕРЕНЫ? [y/N]: ").lower().strip() not in ["y", "н", "д"]:
+            rich.print("[#FFFF00][ОТМЕНА][/] Сохранение отменено в последний момент.")
+            return
+    saves.save(final_save_path, pet)
+
 def command_info(pet: Chachka.Chachka, Gameclass: ClassGame, **k):
-    GameLog.info("Пользователь Ввел команду информации об чачке (info)", log_path)
+    GameLog.info("Пользователь Ввел команду информации об чачке", log_path)
     print("==== ИНФОРМАЦИЯ ОБ ЧАЧКЕ ====")
     status = "здоровая" if pet.hp >= 80 else "несильно повреждена" if pet.hp >= 60 else "повреждена" if pet.hp >= 20 else "критически повреждена" if pet.hp >= 5 else "почти умерла"
     print(f"Хп: {pet.hp}, Статус: {status}")
@@ -51,13 +87,13 @@ def command_info(pet: Chachka.Chachka, Gameclass: ClassGame, **k):
     input("\nНажмите Enter, чтобы вернуться в меню...")
 
 def command_eat(pet: Chachka.Chachka, **k):
-    GameLog.info("Пользователь Ввел команду поедания (eat)", log_path)
+    GameLog.info("Пользователь Ввел команду поедания", log_path)
     print('чачка ест...')
     pet.eating()
     input("\nНажмите Enter, чтобы вернуться в меню...")
 
 def command_step(pet: Chachka.Chachka, **k):
-    GameLog.info("Пользователь Ввел команду передвижения (step)", log_path)
+    GameLog.info("Пользователь Ввел команду передвижения", log_path)
     x: Any = input("введите насколько передвинуться чачке по X: ")
     z: Any = input("введите насколько передвинуться чачке по Z: ")
     try:
@@ -86,7 +122,7 @@ def command_drawmap(map: maps.Map, **k):
     input("\nНажмите Enter, чтобы вернуться в меню...")
 
 def command_use_potions(pet: Chachka.Chachka, **k):
-    GameLog.info("Пользователь Ввел команду поглощения зелей (use_potion / s)", log_path)
+    GameLog.info("Пользователь Ввел команду поглощения зелей", log_path)
     pet.use_potions()
     input("\nНажмите Enter, чтобы вернуться в меню...")
 
@@ -102,6 +138,7 @@ COMMANDS = {
     "drawmap": command_drawmap,
     "use_potion": command_use_potions,
     "use_potions": command_use_potions,
+    "save": save_chachka,
     "": Null_Method
 }
 
@@ -152,16 +189,17 @@ def run():
         menu_title = f"=== Симулятор Чачки ===\nХп: {round(pet.hp, 1)} | Сытость: {round(pet.eat, 1)} | Выносливость: {pet.stamina}\nКоординаты: X: {pet.x}, Z: {pet.z}\nВыберите действие:"
         
         options = [
-            'Пропустить ход',
-            'Информация об чачке (info)',
-            'Отрисовать карту (drawmap)',
-            'Есть все что вокруг (eat)',
-            'Сделать шаг (step)',
-            'Выпить зелья в радиусе 1 клетки (Use_potion / Use_potions)',
-            'крикнуть / викнуть'
+            'Пропустить',
+            'Информация об чачке',
+            'Графическая карта',
+            'Поесть',
+            'Сделать шаг',
+            'Выпить зелья вокруг',
+            'Крик',
+            'сохранение'
         ]
         
-        cmd_keys = ['', 'info', 'drawmap', 'eat', 'step', 'use_potions', 'viy']
+        cmd_keys = ['', 'info', 'drawmap', 'eat', 'step', 'use_potions', 'viy', "save"]
         
         if CHEATS:
             options.append('Открыть чит-меню (Cheat)')
