@@ -1,12 +1,13 @@
 import json
 import os
 from datetime import datetime
+from typing import TYPE_CHECKING
+from Chachka import Chachka
 
-import Chachka
-import rich
+if TYPE_CHECKING:
+    from Gameplay.Map.maps import Map
 
-
-def save(load_file, pet: Chachka.Chachka):
+def save(load_file: str, pet: Chachka) -> bool:
     date = datetime.now()
     
     save_data = {
@@ -16,7 +17,7 @@ def save(load_file, pet: Chachka.Chachka):
         },
         "coords": {
             "x": getattr(pet, "x", 0),
-            "y": getattr(pet, "y", 0)
+            "z": getattr(pet, "z", 0)
         },
         "size": getattr(pet, "size", [30, 30, 30]),
         "pet": {
@@ -33,50 +34,41 @@ def save(load_file, pet: Chachka.Chachka):
     try:
         with open(load_file, "w", encoding="utf-8") as file:
             json.dump(save_data, file, ensure_ascii=False, indent=4)
-        rich.print(f'[#00FF00][SUCCESS][/] Игра успешно сохранена в {load_file}')
-    except Exception as e:
-        rich.print(f'[#FF0000][ERROR][/] Не удалось записать файл сохранения: {e}')
+    except Exception:
         return False
         
     return True
 
+def load(load_file: str, link_map: Map | None = None) -> tuple[Chachka, str] | tuple[None, None]:
+    chachka_object = Chachka(age=0, x=0, z=0)
 
-def load(load_file, link_map=None): # TODO: переписать эту функцию загрузки
-    chachka_object = Chachka.Chachka(age=0, x=0, y=0)
-    
-    if not os.path.exists(load_file):
-        rich.print(f'[#FF0000][ERROR][/] Файл сохранения {load_file} не найден!')
-        return None
+    if os.path.isfile(load_file):
+        with open(load_file, "r", encoding="utf-8") as f:
+            try:
+                readed = json.load(f) 
+            except json.JSONDecodeError:
+                return (None, None)
         
-    with open(load_file, "r", encoding="utf-8") as file:
-        try:
-            settings = json.load(file)
-        except json.JSONDecodeError as e:
-            rich.print(f'[#FF0000][ERROR][/] Ошибка декодирования сохранения: {e}')
-            return None 
+        time_data = readed.get("time", {})
+        date = f'{time_data.get("date", "XX.XX.XXXX")} {time_data.get("hh:mm:ss", "??:??:??")}'
         
-        coords = settings.get("coords", {})
-        chachka_object.x = coords.get("x", 0)
-        chachka_object.y = coords.get("y", 0)
+        coords = readed.get("coords", {})
+        x = coords.get("x", 0)
+        z = coords.get("z", 0)
         
+        size = readed.get("size", [6, 6, 6])
+        pet = readed.get("pet", {})
+        pet_alive = pet.get("alive", {})
 
-        pet_data = settings.get("pet", {})
-        alive_data = pet_data.get("alive", {})
-        
-        chachka_object.alive = alive_data.get("is_alive", True)
-        chachka_object.hp = alive_data.get("hp", 100)
-        chachka_object.stamina = pet_data.get("stamina", 100)
-        chachka_object.eat = pet_data.get("eat", 100)
-        chachka_object.age = pet_data.get("age", 0)
-        
-        allowed_sizes = [[6, 6, 6], [30, 30, 30], [80, 80, 80]]
-        size_data = settings.get("size", [30, 30, 30])
-        
-        if size_data == ["?", "?", "?"] or size_data not in allowed_sizes:
-            size_data = [30, 30, 30]
-            
-        chachka_object.set_size(size_data)
+        chachka_object.x, chachka_object.z = x, z
+        chachka_object._Chachka__size = size
+        chachka_object.alive = pet_alive.get("is_alive", True)
+        chachka_object.hp = pet_alive.get("hp", 100)
+        chachka_object.eat = pet.get("eat", 100)
+        chachka_object.stamina = pet.get("stamina", 100)
+        chachka_object.age = pet.get("age", 0)
         chachka_object.in_map = link_map
-        
-        rich.print(f'[#00FF00][SUCCESS][/] Сохранение успешно загружено!')
-        return chachka_object
+
+        return (chachka_object, date)
+    else:
+        return (None, None)

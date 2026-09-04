@@ -116,7 +116,7 @@ def main():
             os.path.dirname(os.path.abspath(__file__)), "requirements.txt"
         )
         if not os.path.exists(requirements):
-            with open(requirements, "w", encoding="utf-8") as f:
+            with open(requirements, "w", encoding="utf-8"):
                 pass
         subprocess.run([sys.executable, "-m", "pip", "install", "-r", requirements])
 

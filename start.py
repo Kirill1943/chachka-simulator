@@ -38,15 +38,78 @@ else:
     CHEATS = False
 
 
+def load_chachka(pet: Chachka.Chachka, Map: maps.Map, **k):
+    target_dir = os.path.join(".", "saves")
+
+    def _check_dir(filename):
+        full_path = os.path.join(target_dir, filename)
+        if os.path.isfile(full_path) and filename.endswith(".chachka_simulator.save"):
+            return filename
+        return None
+    files = list(filter(None, map(_check_dir, os.listdir(target_dir))))
+
+    keys = [*files]
+    option, index = pick(files, title="--- Выберите файл сохранения из которого будет загружен питомец", indicator="->")
+    key = keys[index]
+
+    Data_corrupted = False
+    with open((filename := os.path.join(target_dir, key)), "r", encoding="utf-8") as f:
+        print("загрузка информации...")
+        print("-----------------------")
+        loaded_pet, date_time = saves.load(filename, Map)
+        if loaded_pet is None:
+            print("[ERROR] сохранение повреждено и не может быть восстановлено")
+            Data_corrupted = True
+        else:
+            date_time_parts = date_time.split() # type: ignore[union-attr]
+            time = date_time_parts[1]
+            date = date_time_parts[0]
+            
+            if time == "??:??:??": time = "[УТЕРЯНО]"
+            if date == "XX.XX.XXXX": date = "[УТЕРЯНО]"
+            print("=== ДАТА СОХРАНЕНИЯ ===")
+            print(f"Время сохранения: {time}")
+            print(f"Дата сохранения: {date}")
+            print(f"=== О ПИТОМЦЕ ===")
+            print(f"Здоровье: {loaded_pet.hp}")
+            print(f"Сытость: {loaded_pet.eat}")
+            print(f"Выносливость: {loaded_pet.stamina}")
+            print(f"Возвраст: {loaded_pet.age}")
+            print("=================")
+            yes_or_no = input("Подвердить загрузку из сохранения? [Y/n]")
+            if yes_or_no.lower().strip() in ["y", "н", "д"]:
+                print("Загрузка из сохранения...")
+                
+                pet.x = loaded_pet.x
+                pet.z = loaded_pet.z
+                pet.hp = loaded_pet.hp
+                pet.eat = loaded_pet.eat
+                pet.stamina = loaded_pet.stamina
+                pet.age = loaded_pet.age
+                pet.alive = loaded_pet.alive
+                pet._Chachka__size = loaded_pet._Chachka__size 
+                
+                input("\nЗагрузка завершена! Нажмите Enter для продолжения...")
+                return pet
+            else:
+                print("Прервано")
+                input("\nEnter для продолжения...")
+                return pet
+        print("-----------------------")
+        
+    if Data_corrupted: 
+        os.rename(filename, f"{filename}.corrupted")
+        input("\nEnter для продолжения...")
+        return pet
+
 def save_chachka(pet: Chachka.Chachka, **k):
     target_dir = os.path.join(".", "saves")
     
     def _check_dir(filename):
         full_path = os.path.join(target_dir, filename)
-        
-        if os.path.isdir(full_path):
-            return None
-        return filename
+        if os.path.isfile(full_path) and filename.endswith(".chachka_simulator.save"):
+            return filename
+        return None
         
     files = list(filter(None, map(_check_dir, os.listdir(target_dir))))
     files.append("Новый файл")
@@ -104,11 +167,11 @@ def command_step(pet: Chachka.Chachka, **k):
     pet.step(x, z)
     input("\nНажмите Enter, чтобы вернуться в меню...")
 
-def command_cheat(pet: Chachka.Chachka, map: maps.Map, conf_path: str, **k):
+def command_cheat(pet: Chachka.Chachka, Map: maps.Map, conf_path: str, **k):
     GameLog.info("Пользователь открывает читы...", log_path)
     if CHEATS:
         print("===========================")
-        cheat.run(Chack=pet, Map=map, logging_file_path=log_path, config_path=conf_path)
+        cheat.run(Chack=pet, Map=Map, logging_file_path=log_path, config_path=conf_path)
         print("===========================")
         input("\nНажмите Enter, чтобы вернуться в меню...")
     else:
@@ -116,9 +179,9 @@ def command_cheat(pet: Chachka.Chachka, map: maps.Map, conf_path: str, **k):
         GameLog.access_denied('Пользователь попытался войти в вкладку читов но запустил игру без этой возможности', log_path)
         input("\nНажмите Enter, чтобы вернуться в меню...")
 
-def command_drawmap(map: maps.Map, **k):
+def command_drawmap(Map: maps.Map, **k):
     GameLog.info("Пользователь Ввел команду отрисовки карты (drawmap)", log_path)
-    draw_map.draw(map)
+    draw_map.draw(Map)
     input("\nНажмите Enter, чтобы вернуться в меню...")
 
 def command_use_potions(pet: Chachka.Chachka, **k):
@@ -139,6 +202,7 @@ COMMANDS = {
     "use_potion": command_use_potions,
     "use_potions": command_use_potions,
     "save": save_chachka,
+    "load": load_chachka,
     "": Null_Method
 }
 
@@ -196,10 +260,11 @@ def run():
             'Сделать шаг',
             'Выпить зелья вокруг',
             'Крик',
-            'сохранение'
+            'сохранить в сохранение',
+            'загрузить из сохранения'
         ]
         
-        cmd_keys = ['', 'info', 'drawmap', 'eat', 'step', 'use_potions', 'viy', "save"]
+        cmd_keys = ['', 'info', 'drawmap', 'eat', 'step', 'use_potions', 'viy', 'save', 'load']
         
         if CHEATS:
             options.append('Открыть чит-меню (Cheat)')
@@ -215,6 +280,9 @@ def run():
         if cmd_key == 'exit':
             GameLog.info('Игра завершена пользователем', log_path)
             break
+        if cmd_key == 'load':
+            pet = load_chachka(pet, map_game)
+            map_game.link_chack(pet)
         elif cmd_key == 'viy':
             menu_title = "=== Выберите тип ==="
             GameLog.info('пользователь выполнил команду ора чачки (viy / scream)', log_path)
@@ -244,7 +312,7 @@ def run():
 
             input("\nНажмите Enter, чтобы вернуться в меню...")
         else:
-            COMMANDS[cmd_key](pet=pet, Gameclass=Gameclass, map=map_game, conf_path=cheat_config)
+            COMMANDS[cmd_key](pet=pet, Gameclass=Gameclass, Map=map_game, conf_path=cheat_config)
                 
         Gameclass.tick()
 
