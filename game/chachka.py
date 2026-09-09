@@ -1,0 +1,113 @@
+import os
+import sys
+
+import rich
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+import game.chachka_reanimation as reanim
+from game.Gameplay_tools.ScanTools.scan import scan_map
+from game.Gameplay_tools.SortTools.sort_objects import sort_eat, sort_potions
+
+
+class Chachka:
+    def __init__(self, age, x, z):
+        self.x, self.z = x, z
+        self.age = age
+        self.hp = 100
+        self.stamina = 100
+        self.eat = 100
+        self.in_map = ...
+        self.alive = True
+        self.inventory = []
+        self.__size = [6, 6, 6]
+
+    def viy(self, scream: int = 2):
+        if self.alive:
+            try:
+                scream = int(scream)
+            except (ValueError, TypeError):
+                scream = 2
+            scream = max(1, min(5, scream))
+            print(f"Чачка викает: В{'И' * scream}")
+
+    def scream(self, scream: int = 10):
+        if self.alive:
+            try:
+                scream = int(scream)
+            except (ValueError, TypeError):
+                scream = 10
+            scream = max(8, min(15, scream))
+            print(f"Чачка орет: В{'И' * scream}")
+    def use_potions(self, radius=1):
+        if self.alive:
+            try:
+                radius = max(1, min(abs(int(radius)), 3))
+            except (ValueError, TypeError):
+                radius = 1
+            if self.in_map is None:
+                rich.print('[#FFFF00][WARNING][/] чачка не привязана к карте')
+            else:
+                potions = sort_potions(scan_map(distance=radius, map_=self.in_map, chachka_x=self.x, chachka_z=self.z))
+                for i in potions:
+                    i.use(self)
+
+                self.in_map.potions = [p for p in self.in_map.potions if p not in potions]
+                self.in_map.objects = [o for o in self.in_map.objects if o not in potions]
+    def eating(self, radius=1):
+        if self.alive:
+            try:
+                radius = max(1, min(abs(int(radius)), 3))
+            except (ValueError, TypeError):
+                radius = 1
+            if self.in_map is None:
+                rich.print('[#FFFF00][WARNING][/] чачка не привязана к карте')
+            else:
+                if self.eat >= 100:
+                    self.eat = 100
+                    return
+                eat = sort_eat(scan_map(distance=radius, map_=self.in_map, chachka_x=self.x, chachka_z=self.z))
+                for i in eat:
+                    if (self.eat + i.eat) >= 100:
+                        return
+                    
+                    self.eat += i.eat
+                    self.eat = max(0, min(self.eat, 100))
+                    
+                    if i in self.in_map.objects:
+                        self.in_map.objects.remove(i)
+                    if i in self.in_map.eat:
+                        self.in_map.eat.remove(i)
+                        
+                    if self.eat >= 100:
+                        self.eat = 100
+                        return
+    def step(self, x, z):
+        if self.alive:
+            try:
+                x, z = int(x), int(z)
+            except (ValueError, TypeError):
+                x, z = 0, 0
+            x, z = max(-3, min(x, 3)), max(-3, min(z, 3))
+            self.x += x
+            self.z += z
+
+            self.x = max(self.in_map.x1, min(self.x, self.in_map.x2))
+            self.z = max(self.in_map.z1, min(self.z, self.in_map.z2))
+
+            minus_stamina = (abs(x) + abs(z)) / 100 * 40
+
+            if self.stamina - minus_stamina <= 0:
+                overuse = minus_stamina - self.stamina
+                self.stamina = 0
+                self.hp -= overuse / 100 * 150
+                
+                if self.hp <= 0:
+                    self.stamina, self.hp = 0, 0
+                    self.alive = False
+                    print("чачка умерла.. но ты подбежал к чачке, ШАНС ЕСТЬ!")
+                    reanim.reanim(self)
+            else:
+                self.stamina -= minus_stamina
+    def set_size(self, size: list):
+        self.__size = size

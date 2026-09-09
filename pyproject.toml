@@ -1,0 +1,45 @@
+[project]
+name = "chachka-simulator"
+version = "0.2.0"
+description = "мелкая консольная игра"
+requires-python = ">=3.10"
+dependencies = [
+    "rich",
+    "pick"
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "mypy",
+    "bandit"
+]
+tests = [
+    "pytest",
+    "pytest-sugar"
+]
+
+[tool.setuptools]
+packages = ["Game"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+addopts = "-v --tb=short"
+norecursedirs = ["build", "dist", ".pytest_cache", "cache/", ".venv", ".git"]
+cache_dir = "cache/pytest_cache"
+
+markers = [
+    "gameplay: тест самой игры, и геймплея",
+    "input_invalid_values: тестирование при невалидных значениях",
+    "utils: тест вспомогательных утилит (Game/Gameplay_tools)"
+]
+
+[tool.ruff]
+cache-dir = "cache/ruff_cache"
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["F", "I", "N", "UP", "SIM"]
+
+[tool.mypy]
+cache_dir = "cache/mypy_cache"
