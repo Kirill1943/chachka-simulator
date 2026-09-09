@@ -3,7 +3,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")))
 
-from Game.Gameplay.effects.effect_blueprint import Buff_Effect as Buff
+from game.Gameplay.effects.effect_blueprint import BuffEffect as Buff
 
 """
 положительные эффекты

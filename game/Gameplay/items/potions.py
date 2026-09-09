@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 import sys
 import typing
@@ -9,7 +11,7 @@ from effects import baffes
 if typing.TYPE_CHECKING:
     from Chachka import Chachka
 
-class potion:
+class Potion:
     def __init__(self, effect_level, x, z):
         self.level = effect_level
         self.effect = ""
@@ -17,7 +19,7 @@ class potion:
     def use(self, chachka_object: Chachka):
         pass
 
-class instant_regenerate_potion(potion):
+class InstantRegeneratePotion(Potion):
     def __init__(self, effect_level, x, z):
         super().__init__(max(1, min(effect_level, 5)), x, z)
         self.effect = baffes.InstantRegeneration(self.level)

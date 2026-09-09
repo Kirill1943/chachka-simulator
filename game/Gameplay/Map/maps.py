@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 import sys
 import typing
@@ -6,11 +8,10 @@ import rich
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")))
 
-from Game.Gameplay.items import Eat_items as eat
-from Game.Gameplay.items import Potion_items as potions
+from game.Gameplay.items import eat, potions
 
 if typing.TYPE_CHECKING:
-    from Game import Chachka
+    from game.Chachka import Chachka
 
 class Map:
     def __init__(self, x1, x2, z1, z2):
@@ -22,7 +23,7 @@ class Map:
         self.chaks = []
         self.potions = []
 
-    def link_chack(self, chachka: Chachka.Chachka):
+    def link_chack(self, chachka: Chachka):
         if type(chachka).__name__ == "Chachka":
             chack_x = max(self.x1, min(chachka.x, self.x2))
             chack_z = max(self.z1, min(chachka.z, self.z2))
@@ -33,15 +34,15 @@ class Map:
         else:
             print('[#FF0000][ERROR][/] попытка расположить НЕ чачку на карте')
     def link_potion(self, potion):
-        if isinstance(potion, potions.potion):
+        if isinstance(potion, potions.Potion):
             potion_x = max(self.x1, min(potion.x, self.x2))
             potion_z = max(self.z1, min(potion.z, self.z2))
             potion.x, potion.z = potion_x, potion_z
             self.objects.append(potion)
             self.potions.append(potion)
 
-    def link_eat(self, food: eat.Base_Eat):
-        if isinstance(food, eat.Base_Eat):
+    def link_eat(self, food: eat.BaseEat):
+        if isinstance(food, eat.BaseEat):
             eat_x = max(self.x1, min(food.x, self.x2))
             eat_z = max(self.z1, min(food.z, self.z2))
             food.x, food.z = eat_x, eat_z

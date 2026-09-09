@@ -9,9 +9,9 @@ from pick import pick
 
 
 def check_immune(cheats_conf):
-    with open(cheats_conf, "r", encoding="utf-8") as file:
+    with open(cheats_conf, encoding="utf-8") as file:
         conf = dict(json.load(file))
-        return conf.get("immortality", None)
+        return conf.get("immortality")
 
 def reanim(chachka):
     cheats_conf = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Config", "Cheats.json"))
@@ -22,7 +22,7 @@ def reanim(chachka):
         is_immortality = False
         
         try:
-            with open(cheats_conf, "r", encoding="utf-8") as file:
+            with open(cheats_conf, encoding="utf-8") as file:
                 conf = json.load(file)
         except Exception:
             conf = {}

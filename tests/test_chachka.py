@@ -22,8 +22,8 @@ def test_chachka_death(fixture_create_chachka):
     chachka.hp = 0
     chachka.alive = False
 
-    assert chachka.Viy(scream=3) is None
-    assert chachka.Scream(scream=10) is None
+    assert chachka.viy(scream=3) is None
+    assert chachka.scream(scream=10) is None
     assert chachka.use_potions(radius=1) is None
     assert chachka.eating(radius=1) is None
     assert chachka.step(x=1, z=1) is None

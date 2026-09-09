@@ -1,8 +1,11 @@
+from __future__ import annotations
+
 import json
 import os
 from datetime import datetime
 from typing import TYPE_CHECKING
-from Chachka import Chachka
+
+from chachka import Chachka
 
 if TYPE_CHECKING:
     from Gameplay.Map.maps import Map
@@ -43,7 +46,7 @@ def load(load_file: str, link_map: Map | None = None) -> tuple[Chachka, str] | t
     chachka_object = Chachka(age=0, x=0, z=0)
 
     if os.path.isfile(load_file):
-        with open(load_file, "r", encoding="utf-8") as f:
+        with open(load_file, encoding="utf-8") as f:
             try:
                 readed = json.load(f) 
             except json.JSONDecodeError:

@@ -5,10 +5,10 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 
 import tkinter as tk
 
-from Game.Chachka import Chachka
-from Game.Gameplay.items import Eat_items as eat
-from Game.Gameplay.items import Potion_items as potion
-from Game.Gameplay.Map.maps import Map
+from game.chachka import Chachka
+from game.Gameplay.items import eat
+from game.Gameplay.items import potions as potion
+from game.Gameplay.Map.maps import Map
 
 
 def draw(map_instance: Map):
@@ -61,7 +61,7 @@ def draw(map_instance: Map):
                         fill="#00AA00", 
                         outline="#A0A0A0"
                     )
-                elif isinstance(item, eat.Apple_slice):
+                elif isinstance(item, eat.AppleSlice):
                     offset_x = cell_width // 4
                     offset_y = cell_height // 4
                     canvas.create_rectangle(
@@ -70,14 +70,13 @@ def draw(map_instance: Map):
                         fill="#88FF00", 
                         outline="#A0A0A0"
                     )
-                elif isinstance(item, potion.instant_regenerate_potion):
-                    if 1 <= item.effect.level <= 5:
-                        color = "#9B0000" if 1 <= item.effect.level <= 3 else "#FF0000"
-                        canvas.create_rectangle(
-                            x1, y1, x2, y2,
-                            fill=color, 
-                            outline="#A0A0A0"
-                        )
+                elif isinstance(item, potion.InstantRegeneratePotion) and 1 <= item.effect.level <= 5:
+                    color = "#9B0000" if 1 <= item.effect.level <= 3 else "#FF0000"
+                    canvas.create_rectangle(
+                        x1, y1, x2, y2,
+                        fill=color, 
+                        outline="#A0A0A0"
+                    )
         for chack in map_instance.chaks:
             cell_x = chack.x - map_instance.x1
             cell_z = chack.z - map_instance.z1

@@ -4,9 +4,9 @@ import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from Game import logging as logs
-from Game.Chachka import Chachka
-from Game.game import ClassGame
+from game import logging as logs
+from game.chachka import Chachka
+from game.game import ClassGame
 
 
 def set_ticks(ticks: int, game_class: ClassGame):
@@ -39,12 +39,12 @@ def set_chachka_eat(eat: int, chachka: Chachka):
 
 def set_chachka_immortality(immortality: bool, config_path: str, log_path: str):
     if os.path.exists(config_path) and os.path.isfile(config_path):
-        with open(config_path, "r", encoding="utf-8") as conf:
+        with open(config_path, encoding="utf-8") as conf:
             try:
                 jsonconf = dict(json.load(conf))
                 jsonconf["immortality"] = immortality
             except json.JSONDecodeError:
-                logs.warning(f"Файл конфигурации читов битый / пустой / не формата JSON, перезапись конфига на стандартный...", file_path=log_path)
+                logs.warning("Файл конфигурации читов битый / пустой / не формата JSON, перезапись конфига на стандартный...", file_path=log_path)
                 jsonconf = {
                     "immortality": immortality
                 }

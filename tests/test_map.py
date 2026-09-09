@@ -3,45 +3,45 @@ import pytest
 
 @pytest.mark.gameplay
 def test_link_chachka(fixture_create_map, fixture_create_chachka):
-    Map = fixture_create_map(x1=-5, x2=5, z1=-5, z2=5)
-    Chachka = fixture_create_chachka()
+    map_ = fixture_create_map(x1=-5, x2=5, z1=-5, z2=5)
+    chachka = fixture_create_chachka()
 
-    Map.link_chack(Chachka)
+    map_.link_chack(chachka)
 
-    assert Chachka in Map.objects
-    assert Chachka in Map.chaks
-    assert Map.get_object(Chachka.x, Chachka.z) == Chachka
+    assert chachka in map_.objects
+    assert chachka in map_.chaks
+    assert map_.get_object(chachka.x, chachka.z) == chachka
 
 @pytest.mark.gameplay
 def test_link_eat(fixture_create_map, fixture_create_eat):
-    Map = fixture_create_map(x1=-5, x2=5, z1=-5, z2=5)
-    Eat = fixture_create_eat(x=0, z=0, eat_level=20)
+    map_ = fixture_create_map(x1=-5, x2=5, z1=-5, z2=5)
+    eat = fixture_create_eat(x=0, z=0, eat_level=20)
 
-    Map.link_eat(Eat)
+    map_.link_eat(eat)
 
-    assert Eat in Map.objects
-    assert Eat in Map.eat
-    assert Map.get_object(Eat.x, Eat.z) == Eat
+    assert eat in map_.objects
+    assert eat in map_.eat
+    assert map_.get_object(eat.x, eat.z) == eat
 
 @pytest.mark.gameplay
 def test_link_potion(fixture_create_map, fixture_create_potion):
-    Map = fixture_create_map(x1=-5, x2=5, z1=-5, z2=5)
-    Potion = fixture_create_potion(x=0, z=0, effect_level=3)
+    map_ = fixture_create_map(x1=-5, x2=5, z1=-5, z2=5)
+    potion_ = fixture_create_potion(x=0, z=0, effect_level=3)
 
-    Map.link_potion(Potion)
+    map_.link_potion(potion_)
 
-    assert Potion in Map.objects
-    assert Potion in Map.potions
-    assert Map.get_object(Potion.x, Potion.z) == Potion
+    assert potion_ in map_.objects
+    assert potion_ in map_.potions
+    assert map_.get_object(potion_.x, potion_.z) == potion_
 
 def test_get_object(fixture_create_chachka, fixture_create_map):
-    Map = fixture_create_map(x1=-5, x2=5, z1=-5, z2=5)
-    Chachka = fixture_create_chachka()
+    map_ = fixture_create_map(x1=-5, x2=5, z1=-5, z2=5)
+    chachka = fixture_create_chachka()
 
-    Chachka.x = 3
-    Chachka.z = 1
+    chachka.x = 3
+    chachka.z = 1
 
-    Map.link_chack(Chachka)
+    map_.link_chack(chachka)
 
-    assert Map.get_object(6, -9) == None
-    assert Map.get_object(3, 1) == Chachka
+    assert map_.get_object(6, -9) == None
+    assert map_.get_object(3, 1) == chachka

@@ -9,19 +9,19 @@ class Effect:
     def __str__(self):
         return f"Эффект {self.effect} Уровень {self.level}"
 
-class Buff_Effect(Effect):
+class BuffEffect(Effect):
     def __init__(self, effect: str, level: int):
         super().__init__(level)
         self.effect = effect
         self.type_effect = 1
 
-class Neutral_Effect(Effect):
+class NeutralEffect(Effect):
     def __init__(self, effect: str, level: int):
         super().__init__(level)
         self.effect = effect
         self.type_effect = 0
 
-class Debuff_Effect(Effect):
+class DebuffEffect(Effect):
     def __init__(self, effect: str, level: int):
         super().__init__(level)
         self.effect = effect

@@ -18,30 +18,26 @@ jobs:
         with:
           python-version: "3.14"
 
-      - name: Установка всех зависимостей [1 / 7]
+      - name: Установка всех зависимостей [1 / 6]
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -r requirements.txt
+          python manage.py install
 
-      - name: Установка инструментов (Ruff, MyPy, Bandit, Pytest) [2 / 7]
+      - name: Установка инструментов (Ruff, MyPy, Bandit, Pytest) [2 / 6]
         run: |
           python -m pip install mypy bandit ruff pytest
 
-      - name: Проверка синтаксиса  (Ruff) [3 / 7]
+      - name: Проверка синтаксиса и порядка импортов (Ruff) [3 / 6]
         run: |
-          ruff check . --select=E9,F401,F821,F841,E225
+          ruff check .
 
-      - name: Проверка порядка импортов (Ruff) [4 / 7]
-        run: |
-          ruff check . --select=I
-
-      - name: Проверка типов (MyPy) [5 / 7]
+      - name: Проверка типов (MyPy) [4 / 6]
         run: |
           mypy . --ignore-missing-imports
 
-      - name: Проверка уязвимостей (Bandit) [6 / 7]
+      - name: Проверка уязвимостей (Bandit) [5 / 6]
         run: |
           bandit -r . -ll
-      - name: Python-Тесты (pytest) [7 / 7]
+      - name: Python-Тесты (pytest) [6 / 6]
         run: |
           pytest tests/

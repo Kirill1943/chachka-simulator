@@ -33,3 +33,13 @@ markers = [
     "input_invalid_values: тестирование при невалидных значениях",
     "utils: тест вспомогательных утилит (Game/Gameplay_tools)"
 ]
+
+[tool.ruff]
+cache-dir = "cache/ruff_cache"
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["F", "I", "N", "UP", "SIM"]
+
+[tool.mypy]
+cache_dir = "cache/mypy_cache"

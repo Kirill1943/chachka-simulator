@@ -1,10 +1,10 @@
 import pytest
 
-from Game.Chachka import Chachka
-from Game.game import ClassGame
-from Game.Gameplay.items.Eat_items import Base_Eat
-from Game.Gameplay.items.Potion_items import potion
-from Game.Gameplay.Map.maps import Map
+from game.chachka import Chachka
+from game.game import ClassGame
+from game.Gameplay.items.eat import BaseEat
+from game.Gameplay.items.potions import Potion
+from game.Gameplay.Map.maps import Map
 
 
 @pytest.fixture
@@ -26,13 +26,13 @@ def fixture_create_map():
 @pytest.fixture
 def fixture_create_eat():
     def _make_eat(eat_level: int, x: int = 0, z: int = 0):
-        return Base_Eat(x=x, z=z, eat=eat_level)
+        return BaseEat(x=x, z=z, eat=eat_level)
     return _make_eat
 
 @pytest.fixture
 def fixture_create_potion():
     def _make_potion(effect_level: int, x: int = 0, z: int = 0):
-        return potion(effect_level=effect_level, x=x, z=z)
+        return Potion(effect_level=effect_level, x=x, z=z)
     return _make_potion
 
 @pytest.fixture

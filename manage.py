@@ -52,7 +52,7 @@ def clean_cache(path="."):
             except Exception as e:
                 print(f"Не удалось удалить {item_path}: {e}")
     else:
-        print(f"Папка с кешем не найдена")
+        print("Папка с кешем не найдена")
 
     for i in os.listdir(path):
         if re.match(r".*_cache$", i):
@@ -143,7 +143,7 @@ def main():
             )
     elif command == "help":
         try:
-            from Game.Help import menu
+            from game.Help import menu
             menu.run()
         except ModuleNotFoundError:
             print("Ошибка: Модуль Game.Help не найден!")
